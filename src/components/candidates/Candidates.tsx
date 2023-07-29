@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
 import MyTable from '../tables/MyTable'
-import { CandidateModel } from './CandidatesCreate'
+import { CandidateModel } from './CandidatesForm'
 import NotyfContext from '../../contexts/NotyfContext';
 import DexieUtils from '../../utils/dexie-utils'
 

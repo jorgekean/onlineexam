@@ -18,7 +18,7 @@ export interface SectionModel {
     sectionPath: string;
 }
 
-const Sections: React.FC<SectionsProps> = ({ updateListMode }) => {
+const SectionsForm: React.FC<SectionsProps> = ({ updateListMode }) => {
     // Initialize the form state with default values
     const initialFormState: SectionModel = {
         id: '',
@@ -70,6 +70,9 @@ const Sections: React.FC<SectionsProps> = ({ updateListMode }) => {
                     y: "bottom"
                 }
             })
+
+            // go back to list
+            updateListMode(true)
         } catch (error) {
             console.error('Error adding section:', error);
             // Do error handling here...
@@ -120,4 +123,4 @@ const Sections: React.FC<SectionsProps> = ({ updateListMode }) => {
     )
 }
 
-export default Sections
+export default SectionsForm

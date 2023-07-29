@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Select from "react-select";
 import DexieUtils from '../../utils/dexie-utils';
 import NotyfContext from '../../contexts/NotyfContext';
-import { GroupModel } from '../groups/GroupsCreate';
+import { GroupModel } from '../groups/GroupsForm';
 
 interface CandidatesProps {
     // listMode: boolean;
@@ -34,7 +34,7 @@ export interface CandidateModel {
 }
 
 
-const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode, candidate }) => {
+const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }) => {
 
     // Initialize the form state with default values
     const initialFormState: CandidateModel = {
@@ -90,8 +90,6 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode, candidate
         let checked: boolean
         if (type === 'checkbox') {
             checked = (event.target as HTMLInputElement).checked
-
-            console.log(checked, name)
         }
 
         setFormState((prevState) => ({
@@ -383,4 +381,4 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode, candidate
     )
 }
 
-export default CandidatesCreate
+export default CandidatesForm

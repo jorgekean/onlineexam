@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router-dom'
 import Sections from '../../../components/sections/Sections';
 import DidYouKnow from '../../../components/wiki/DidYouKnow';
 import RelatedTasks from '../../../components/relatedtask/RelatedTasks';
-import SectionsCreate from '../../../components/sections/SectionsCreate';
+import SectionsForm from '../../../components/sections/SectionsForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudArrowDown, faCloudArrowUp, faComments } from '@fortawesome/free-solid-svg-icons';
 
@@ -34,7 +34,7 @@ const SectionsPage: React.FC<SectionProps> = ({ children }) => {
 
                 <Row>
                     <Col lg="8">
-                        {listMode ? <Sections updateListMode={updateListMode} /> : <SectionsCreate updateListMode={updateListMode} />}
+                        {listMode ? <Sections updateListMode={updateListMode} /> : <SectionsForm updateListMode={updateListMode} />}
                     </Col>
                     <Col lg="4">
                         <DidYouKnow items={wikiItems} />

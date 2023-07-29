@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router-dom'
 import Groups from '../../../components/groups/Groups';
 import DidYouKnow from '../../../components/wiki/DidYouKnow';
 import RelatedTasks from '../../../components/relatedtask/RelatedTasks';
-import GroupsCreate from '../../../components/groups/GroupsCreate';
+import GroupsForm from '../../../components/groups/GroupsForm';
 
 const wikiItems = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -32,7 +32,7 @@ const GroupsPage: React.FC<GroupProps> = ({ children }) => {
 
                 <Row>
                     <Col lg="8">
-                        {listMode ? <Groups updateListMode={updateListMode} /> : <GroupsCreate updateListMode={updateListMode} />}
+                        {listMode ? <Groups updateListMode={updateListMode} /> : <GroupsForm updateListMode={updateListMode} />}
                     </Col>
                     <Col lg="4">
                         <DidYouKnow items={wikiItems} />

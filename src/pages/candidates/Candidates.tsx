@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router-dom'
 import Candidates from '../../components/candidates/Candidates';
 import DidYouKnow from '../../components/wiki/DidYouKnow';
 import RelatedTasks from '../../components/relatedtask/RelatedTasks';
-import CandidatesCreate, { CandidateModel } from '../../components/candidates/CandidatesCreate';
+import CandidatesForm, { CandidateModel } from '../../components/candidates/CandidatesForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudArrowDown, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -42,7 +42,7 @@ const CandidatesPage: React.FC<CandidateProps> = ({ children }) => {
 
                 <Row>
                     <Col lg="8">
-                        {listMode ? <Candidates updateListMode={updateListMode} setSelectedRow={setSelectedCandidate} /> : <CandidatesCreate updateListMode={updateListMode} candidate={candidate} />}
+                        {listMode ? <Candidates updateListMode={updateListMode} setSelectedRow={setSelectedCandidate} /> : <CandidatesForm updateListMode={updateListMode} candidate={candidate} />}
                     </Col>
                     <Col lg="4">
                         <DidYouKnow items={wikiItems} />

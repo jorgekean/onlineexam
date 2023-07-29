@@ -18,7 +18,7 @@ export interface GroupModel {
     description: string;
 }
 
-const Groups: React.FC<GroupsProps> = ({ updateListMode }) => {
+const GroupsForm: React.FC<GroupsProps> = ({ updateListMode }) => {
     // Initialize the form state with default values
     const initialFormState: GroupModel = {
         id: '',
@@ -70,6 +70,9 @@ const Groups: React.FC<GroupsProps> = ({ updateListMode }) => {
                     y: "bottom"
                 }
             })
+
+            // go back to list
+            updateListMode(true)
         } catch (error) {
             console.error('Error adding group:', error);
             // Do error handling here...
@@ -120,4 +123,4 @@ const Groups: React.FC<GroupsProps> = ({ updateListMode }) => {
     )
 }
 
-export default Groups
+export default GroupsForm

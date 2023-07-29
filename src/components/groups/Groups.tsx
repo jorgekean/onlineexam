@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
 import MyTable from '../tables/MyTable'
-import { GroupModel } from './GroupsCreate'
+import { GroupModel } from './GroupsForm'
 import DexieUtils from '../../utils/dexie-utils'
 
 // import { tableData, tableColumns } from "./data";
