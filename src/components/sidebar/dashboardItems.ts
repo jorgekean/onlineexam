@@ -16,52 +16,64 @@ import {
   Share,
 } from "react-feather";
 
-import { faUsers, faHome, faBook, faGear, faQuestion, faBarChart, faBell } from "@fortawesome/free-solid-svg-icons";
-export const baseURL: string = "onlineexam";
+import { faUsers, faHome, faBook, faGear, faQuestion, faBarChart, faBell, faFolder } from "@fortawesome/free-solid-svg-icons";
+export const baseURL: string = "/onlineexam";
 
 const pagesSection = [
   {
-    href: `dashboard`,
+    href: `${baseURL}/dashboard`,
     icon: faHome,
     title: "Dashboards"
   },
   {
-    href: `exams`,
+    href: `${baseURL}/exams`,
     icon: faBook,
     title: "Exams",
   },
   {
-    href: "candidates",
+    href: `${baseURL}/candidates`,
     icon: faUsers,
     title: "Candidates",
   },
   {
-    href: "questions",
+    href: `${baseURL}/questions`,
     icon: faQuestion,
     title: "Questions",
   },
   {
-    href: "statistics",
+    href: `${baseURL}/statistics`,
     icon: faBarChart,
     title: "Statistics",
   },
   {
-    href: "notifications",
+    href: `${baseURL}/notifications`,
     icon: faBell,
     title: "Notifications",
-  },
-  {
-    href: "settings",
-    icon: faGear,
-    title: "Settings",
   }
 ] as SidebarItemsType[];
 
+const settingsPagesSection = [
+  {
+    href: `${baseURL}/settings/sections`,
+    icon: faFolder,
+    title: "Sections"
+  },
+  {
+    href: `${baseURL}/settings/groups`,
+    icon: faUsers,
+    title: "Groups",
+  }
+] as SidebarItemsType[];
 
 const navItems = [
   {
     title: "",
     pages: pagesSection,
+  },
+  {
+    title: "Settings",
+    icon: faGear,
+    pages: settingsPagesSection,
   }
 ];
 

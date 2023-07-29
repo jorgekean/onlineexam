@@ -31,36 +31,6 @@ const tableColumns = [
     }
 ];
 
-const tableData = [
-    {
-        firstName: "Tiger",
-        lastName: "Nixon",
-        displayName: "Tiger Nixon",
-        email: "Tiger.Nixon@email.com",
-        userName: "TigerNixon123",
-        candidateGroup: "group1",
-        avatar: ""
-    },
-    {
-        firstName: "Michael",
-        lastName: "Bruce",
-        displayName: "Michael Bruce",
-        email: "Michael.Bruce@email.com",
-        userName: "MichaelBruce123",
-        candidateGroup: "group2",
-        avatar: ""
-    },
-    {
-        firstName: "Donna",
-        lastName: "Snider",
-        displayName: "Donna Snider",
-        email: "Donna.Snider@email.com",
-        userName: "DonnaSnider123",
-        candidateGroup: "group3",
-        avatar: "/src/assets/img/avatars/avatar-3.jpg"
-    }
-];
-
 interface CandidatesProps {
     // listMode?: boolean;
     updateListMode: (mode: boolean) => void;

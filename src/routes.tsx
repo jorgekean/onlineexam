@@ -17,6 +17,8 @@ import Statistics from "./pages/statistics/Statistics";
 import Notifications from "./pages/notifications/Notifications";
 import { Settings } from "react-feather";
 import CandidatesPage from "./pages/candidates/Candidates";
+import Sections from "./pages/settings/sections/Sections";
+import Groups from "./pages/settings/groups/Groups";
 
 // Landing
 const Landing = lazy(() => import("./pages/landing/Landing"));
@@ -53,11 +55,11 @@ export const baseURL: string = "onlineexam";
 const routes = [
   {
     path: `${baseURL}/`,
-    element: <LandingLayout />,
+    element: <DashboardLayout />,
     children: [
       {
         path: "",
-        element: <AuthGuard><Landing /></AuthGuard>,
+        element: <AuthGuard><Default /></AuthGuard>,
       },
     ],
   },
@@ -88,13 +90,37 @@ const routes = [
       {
         path: "notifications",
         element: <AuthGuard><Notifications /></AuthGuard>,
-      },
-      {
-        path: "settings",
-        element: <AuthGuard><Settings /></AuthGuard>,
       }
     ],
   },
+  {
+    path: `${baseURL}/settings`,
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "sections",
+        element: <Sections />,
+      },
+      {
+        path: "groups",
+        element: <Groups />,
+      }
+    ]
+  },
+  // {
+  //   path: `${baseURL}/settings`,
+  //   element: <DashboardLayout />,
+  //   childrem: [
+  //     {
+  //       path: "sections",
+  //       element: <AuthGuard><Sections /></AuthGuard>
+  //     },
+  //     {
+  //       path: "groups",
+  //       element: <AuthGuard><Groups /></AuthGuard>
+  //     }
+  //   ]
+  // },
   {
     path: `${baseURL}/auth`,
     element: <AuthLayout />,

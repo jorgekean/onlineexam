@@ -1,11 +1,12 @@
 import { faList, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import Select from "react-select";
 import DexieUtils from '../../utils/dexie-utils';
 import NotyfContext from '../../contexts/NotyfContext';
+import { GroupModel } from '../groups/GroupsCreate';
 
 interface CandidatesProps {
     // listMode: boolean;
@@ -56,9 +57,29 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
 
     const [formState, setFormState] = useState<CandidateModel>(initialFormState);
     const [dexieUtils] = useState(DexieUtils<CandidateModel>({ tableName: 'candidates' }));
+    const [groupDexieUtils] = useState(DexieUtils<GroupModel>({ tableName: 'groups' }));
     const notyf = useContext(NotyfContext);
     // Add a state to track errors for each form field
     const [errors, setErrors] = useState<Partial<CandidateModel>>({});
+    const [groupOptions, setGroupOptions] = useState<{ value: string, label: string }[]>([]);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+
+            const groups = await groupDexieUtils.getAll();
+
+            // Map groups to options with value and label attributes
+            const options = groups.map(({ group, description }) => ({
+                value: group,
+                label: `${group} - ${description}`,
+            }));
+            console.log(options, "opt")
+            setGroupOptions(options)
+        };
+        fetchData();
+    }, []);
+
 
     // Handle changes in form inputs and update the form state
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -104,13 +125,12 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
         }
     };
 
-
-    // TEMP OPTIONS
-    const options = [
-        { value: "group1", label: "Group 1" },
-        { value: "group2", label: "Group 2" },
-        { value: "group3", label: "Group 3" },
-    ];
+    // const options =
+    //     [
+    //     { value: "group1", label: "Group 1" },
+    //     { value: "group2", label: "Group 2" },
+    //     { value: "group3", label: "Group 3" },
+    // ];
     const optionsIdentification = [
         { value: "driverLicence", label: "Driver's License" },
         { value: "umid", label: "UMID" },
@@ -192,9 +212,9 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
                         <Select
                             className={`react-select-container ${errors.lastName ? 'is-invalid' : ''}`}
                             classNamePrefix="react-select"
-                            options={options}
+                            options={groupOptions}
                             isSearchable
-                            value={options.find((option) => option.value === formState.candidateGroup)}
+                            value={groupOptions.find((option) => option.value === formState.candidateGroup)}
                             onChange={(selectedOption) => {
                                 if (selectedOption) {
                                     setFormState((prevState) => ({

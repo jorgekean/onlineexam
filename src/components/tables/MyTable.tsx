@@ -90,7 +90,7 @@ const MyTable = (props: CustomTableOptions<Record<string, unknown>>) => {
                                         })}
 
                                         {onEdit || onDelete ? (
-                                            <td>
+                                            <td className="d-flex justify-content-end">
                                                 {/* Edit and Delete Buttons */}
                                                 <React.Fragment>
                                                     {onEdit && (
