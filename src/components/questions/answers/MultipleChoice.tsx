@@ -1,9 +1,11 @@
-import { faList, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faCheckSquare, faList, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react';
 import { useContext, useState } from 'react';
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Badge, Button, Card, Col, Form, Row } from 'react-bootstrap'
 import MyEditor, { EditorContent } from '../MyEditor';
+
+import './answers.css'
 
 interface EditorAnswer {
     editorContent: EditorContent;
@@ -19,6 +21,7 @@ const defaultChoices = [
 
 const MultipleChoice = () => {
     const [editors, setEditors] = useState<EditorAnswer[]>(defaultChoices);
+    const [selectedCorrectIndex, setSelectedCorrectIndex] = useState<number | null>(null);
 
     const handleEditorChange = (index: number, content: EditorContent) => {
         setEditors((prevEditors) => {
@@ -34,7 +37,14 @@ const MultipleChoice = () => {
             newEditors[index] = { ...newEditors[index], isCorrect };
             return newEditors;
         });
+
+        if (isCorrect) {
+            setSelectedCorrectIndex(index);
+        } else {
+            setSelectedCorrectIndex(null);
+        }
     };
+
 
     const handleAddEditor = () => {
         setEditors((prevEditors) => [...prevEditors, { editorContent: undefined, isCorrect: false }]);
@@ -48,23 +58,37 @@ const MultipleChoice = () => {
         });
     };
 
+    // Helper function to generate labels (A, B, C, D, and so on) based on index
+    const getLabelForIndex = (index: number) => {
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return alphabet[index];
+    };
+
     return (
         <React.Fragment>
             <Row>
                 {editors.map((editor, index) => (
-                    <Col md={6} key={index}>
-                        <input
+                    <Col md={6} key={index} className='answer-editor'>
+                        <Form.Check
+                            inline
+                            label={getLabelForIndex(index)}
                             type="radio"
-                            checked={editor.isCorrect}
-                            name='choices'
+                            name="choices"
+                            value="true" // Set the value for the "Enable" option
+                            // checked={formState.specialNeeds === "true"} // Check if it's selected
                             onChange={(e) => handleCorrectnessChange(index, e.target.checked)}
                         />
+                        {selectedCorrectIndex === index && editor.isCorrect && (
+                            <Badge bg="success">
+                                <FontAwesomeIcon icon={faCheckSquare} /> Correct
+                            </Badge>
+                        )}
                         <MyEditor value={editor.editorContent} onChange={(content) => handleEditorChange(index, content)} />
-                        <Button onClick={() => handleRemoveEditor(index)}>Remove Editor</Button>
+                        <Button size='sm' onClick={() => handleRemoveEditor(index)}>Remove Editor</Button>
                     </Col>
                 ))}
             </Row>
-            <Button onClick={handleAddEditor}>Add New Choice</Button>
+            <Button size='sm' onClick={handleAddEditor} className='mt-1'>Add New Choice</Button>
         </React.Fragment>
 
     )
