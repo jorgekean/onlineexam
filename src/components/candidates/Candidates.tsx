@@ -1,9 +1,10 @@
 import { faGear, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
 import MyTable from '../tables/MyTable'
 import { CandidateModel } from './CandidatesCreate'
+import NotyfContext from '../../contexts/NotyfContext';
 import DexieUtils from '../../utils/dexie-utils'
 
 // import { tableData, tableColumns } from "./data";
@@ -34,24 +35,57 @@ const tableColumns = [
 interface CandidatesProps {
     // listMode?: boolean;
     updateListMode: (mode: boolean) => void;
+    setSelectedRow: (model: CandidateModel | undefined) => void;
 }
 
-const Candidates: React.FC<CandidatesProps> = ({ updateListMode }) => {
+const Candidates: React.FC<CandidatesProps> = ({ updateListMode, setSelectedRow }) => {
     const [candidates, setCandidates] = useState<CandidateModel[]>([]);
     const [dexieUtils] = useState(DexieUtils<CandidateModel>({ tableName: 'candidates' }));
+    const notyf = useContext(NotyfContext);
 
     useEffect(() => {
         const fetchData = async () => {
-            var list = await dexieUtils.getAll();
-            const candidatesWithDisplayName = list.map((candidate) => ({
-                ...candidate,
-                displayName: candidate.firstName + ' ' + candidate.lastName,
-            }));
-
-            setCandidates(candidatesWithDisplayName)
+            await getCandidates()
         };
         fetchData();
     }, []);
+
+    const getCandidates = async () => {
+        var list = await dexieUtils.getAll();
+        const candidatesWithDisplayName = list.map((candidate) => ({
+            ...candidate,
+            displayName: candidate.firstName + ' ' + candidate.lastName,
+        }));
+
+        setCandidates(candidatesWithDisplayName)
+    }
+
+    const handleOnCreate = async () => {
+        updateListMode(false)// show create/edit form             
+        setSelectedRow(undefined)
+    }
+
+    const handleOnEdit = async (data: any) => {
+        updateListMode(false)// show create/edit form             
+        setSelectedRow(data as CandidateModel)
+    }
+
+    const handleOnDelete = async (data: any) => {
+        await dexieUtils.deleteEntity(data.id);
+
+        // Show a success message
+        notyf.open({
+            background: "#4BBF73",
+            message: "Candidates deleted!",
+            position: {
+                x: "right",
+                y: "bottom"
+            }
+        })
+
+        getCandidates()
+
+    }
 
     return (
         <Card>
@@ -59,7 +93,7 @@ const Candidates: React.FC<CandidatesProps> = ({ updateListMode }) => {
                 <div className='d-flex justify-content-between align-items-center'>
                     <h4>Candidates</h4>
                     <div className='d-flex gap-1'>
-                        <Button onClick={() => updateListMode(false)}><FontAwesomeIcon icon={faPlus} /> Create</Button>
+                        <Button onClick={() => handleOnCreate()}><FontAwesomeIcon icon={faPlus} /> Create</Button>
                         <Dropdown>
                             <Dropdown.Toggle>
                                 <FontAwesomeIcon icon={faGear} />
@@ -75,7 +109,7 @@ const Candidates: React.FC<CandidatesProps> = ({ updateListMode }) => {
                 </div>
             </Card.Header>
             <Card.Body>
-                <MyTable columns={tableColumns} data={candidates as []} onEdit={(e) => console.log(e)} onDelete={(e) => console.log(e)} />
+                <MyTable columns={tableColumns} data={candidates as []} onEdit={(e) => handleOnEdit(e)} onDelete={(e) => handleOnDelete(e)} />
             </Card.Body>
         </Card>
 

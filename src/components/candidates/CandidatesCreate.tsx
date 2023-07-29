@@ -11,6 +11,7 @@ import { GroupModel } from '../groups/GroupsCreate';
 interface CandidatesProps {
     // listMode: boolean;
     updateListMode: (mode: boolean) => void;
+    candidate?: CandidateModel;
 }
 
 export interface CandidateModel {
@@ -33,26 +34,26 @@ export interface CandidateModel {
 }
 
 
-const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
+const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode, candidate }) => {
 
     // Initialize the form state with default values
     const initialFormState: CandidateModel = {
-        id: '',
-        displayName: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        userName: '',
-        password: '',
-        candidateGroup: 'group1',
-        mobile: '',
-        uniqueIdentification: '',
-        uniqueIdentificationNumber: '',
-        specialNeeds: 'false',
-        active: 'true',
-        sendCredentials: false,
-        referenceId: '',
-        moreDetails: ''
+        id: candidate ? candidate.id : '',
+        displayName: candidate ? candidate.displayName : '',
+        firstName: candidate ? candidate.firstName : '',
+        lastName: candidate ? candidate.lastName : '',
+        email: candidate ? candidate.email : '',
+        userName: candidate ? candidate.userName : '',
+        password: candidate ? candidate.password : '',
+        candidateGroup: candidate ? candidate.candidateGroup : '',
+        mobile: candidate ? candidate.mobile : '',
+        uniqueIdentification: candidate ? candidate.uniqueIdentification : '',
+        uniqueIdentificationNumber: candidate ? candidate.uniqueIdentificationNumber : '',
+        specialNeeds: candidate ? candidate.specialNeeds : 'false',
+        active: candidate ? candidate.active : 'true',
+        sendCredentials: candidate ? candidate.sendCredentials : false,
+        referenceId: candidate ? candidate.referenceId : '',
+        moreDetails: candidate ? candidate.moreDetails : ''
     };
 
     const [formState, setFormState] = useState<CandidateModel>(initialFormState);
@@ -74,7 +75,6 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
                 value: group,
                 label: `${group} - ${description}`,
             }));
-            console.log(options, "opt")
             setGroupOptions(options)
         };
         fetchData();
@@ -86,10 +86,17 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
         const { name, value, type, required } = event.target;
 
         // Special handling for checkboxes
-        const fieldValue = type === 'checkbox' || type === 'radio' ? ((event.target as HTMLInputElement).value) : value;
+        let fieldValue = type === 'radio' ? ((event.target as HTMLInputElement).value) : value;
+        let checked: boolean
+        if (type === 'checkbox') {
+            checked = (event.target as HTMLInputElement).checked
+
+            console.log(checked, name)
+        }
+
         setFormState((prevState) => ({
             ...prevState,
-            [name]: fieldValue,
+            [name]: type === "checkbox" ? checked : fieldValue,
         }));
 
         // Validate the form field and update the error state
@@ -100,12 +107,25 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
         }
     };
 
+    const onSave = async () => {
+        // Perform the add operation using DexieUtils
+        const id = await dexieUtils.add(formState);
+        console.log('Added successfully with id:', id);
+    }
+    const onUpdate = async () => {
+        // Perform the update operation using DexieUtils
+        await dexieUtils.update(formState);
+        console.log('Updated successfully with id:', formState.id);
+    }
+
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            // Perform the add operation using DexieUtils
-            const id = await dexieUtils.add(formState);
-            console.log('Added successfully with id:', id);
+            if (candidate) {
+                onUpdate()
+            } else {
+                onSave()
+            }
 
             // Optionally, you can clear the form after adding
             setFormState(initialFormState);
@@ -119,18 +139,15 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
                     y: "bottom"
                 }
             })
+
+            // go back to list
+            updateListMode(true)
         } catch (error) {
             console.error('Error adding candidate:', error);
             // Do error handling here...
         }
     };
 
-    // const options =
-    //     [
-    //     { value: "group1", label: "Group 1" },
-    //     { value: "group2", label: "Group 2" },
-    //     { value: "group3", label: "Group 3" },
-    // ];
     const optionsIdentification = [
         { value: "driverLicence", label: "Driver's License" },
         { value: "umid", label: "UMID" },
@@ -346,7 +363,15 @@ const CandidatesCreate: React.FC<CandidatesProps> = ({ updateListMode }) => {
 
 
                     <Form.Group className="mb-3">
-                        <Form.Check type="checkbox" id="checkbox" label={<div> Send username & passowrd to this candidate <FontAwesomeIcon icon={faQuestionCircle} />  <Link to={''}>Email Settings & Templates</Link></div>} />
+                        <Form.Check
+                            type="checkbox"
+                            name='sendCredentials'
+                            checked={formState.sendCredentials}
+                            onChange={handleInputChange}
+                            label={<div> Send username & passowrd to this candidate <FontAwesomeIcon icon={faQuestionCircle} />
+                                <Link to={''}>Email Settings & Templates</Link>
+                            </div>}
+                        />
                     </Form.Group>
 
                     <Button type='submit' variant="primary me-2">Submit</Button>

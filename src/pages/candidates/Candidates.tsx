@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router-dom'
 import Candidates from '../../components/candidates/Candidates';
 import DidYouKnow from '../../components/wiki/DidYouKnow';
 import RelatedTasks from '../../components/relatedtask/RelatedTasks';
-import CandidatesCreate from '../../components/candidates/CandidatesCreate';
+import CandidatesCreate, { CandidateModel } from '../../components/candidates/CandidatesCreate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudArrowDown, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,10 +23,15 @@ interface CandidateProps {
 
 const CandidatesPage: React.FC<CandidateProps> = ({ children }) => {
     const [listMode, setListMode] = useState<boolean>(true);
+    const [candidate, setCandidate] = useState<CandidateModel | undefined>(undefined)
 
     // Function to update the listMode state from the Candidates and CandidatesCreate components
     const updateListMode = (mode: boolean) => {
         setListMode(mode);
+    };
+
+    const setSelectedCandidate = (model: CandidateModel | undefined) => {
+        setCandidate(model);
     };
 
     return (
@@ -37,7 +42,7 @@ const CandidatesPage: React.FC<CandidateProps> = ({ children }) => {
 
                 <Row>
                     <Col lg="8">
-                        {listMode ? <Candidates updateListMode={updateListMode} /> : <CandidatesCreate updateListMode={updateListMode} />}
+                        {listMode ? <Candidates updateListMode={updateListMode} setSelectedRow={setSelectedCandidate} /> : <CandidatesCreate updateListMode={updateListMode} candidate={candidate} />}
                     </Col>
                     <Col lg="4">
                         <DidYouKnow items={wikiItems} />
