@@ -1,4 +1,4 @@
-import { faList, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCancel, faList, faQuestion, faQuestionCircle, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useContext, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
@@ -221,7 +221,7 @@ const QuestionsForm: React.FC<QuestionsProps> = ({ updateListMode, question }) =
                             </Form.Group>
                         </Col>
                     </Row>
-                    <Form.Group className="mb-3">
+                    <Form.Group className="mb-3 question-editor">
                         <Form.Label>Question</Form.Label>
                         <ReactQuill
                             placeholder="You can type or drag your question here"
@@ -231,10 +231,10 @@ const QuestionsForm: React.FC<QuestionsProps> = ({ updateListMode, question }) =
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Answers</Form.Label>
-                        <MultipleChoice></MultipleChoice>
+                        {(formState.questionType === "multipleChoiceRadio" || formState.questionType === "multipleChoiceDropdown") && <MultipleChoice></MultipleChoice>}
                     </Form.Group>
-                    <Button type='submit' variant="primary me-2">Submit</Button>
-                    <Button variant="secondary" onClick={() => updateListMode(true)}>Cancel</Button>
+                    <Button type='submit' variant="primary me-2"><FontAwesomeIcon icon={faSave} /> Submit</Button>
+                    <Button variant="secondary" onClick={() => updateListMode(true)}><FontAwesomeIcon icon={faCancel} /> Cancel</Button>
                 </Form>
             </Card.Body>
         </Card>

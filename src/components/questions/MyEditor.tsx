@@ -1,6 +1,6 @@
 import ReactQuill from "react-quill";
 
-type EditorContent = string | number | undefined;
+export type EditorContent = string | number | undefined;
 
 interface EditorProps {
     value: EditorContent;
@@ -15,7 +15,7 @@ const MyEditor: React.FC<EditorProps> = ({ value, onChange }) => {
         <ReactQuill
             value={sanitizedValue}
             onChange={onChange}
-            className="flex-grow-1 flex-shrink-1"
+            style={{ minHeight: '1rem' }}
         />
     );
 };

@@ -1,11 +1,9 @@
-import { faCheck, faCheckSquare, faList, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faAdd, faCheck, faCheckSquare, faList, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react';
 import { useContext, useState } from 'react';
 import { Badge, Button, Card, Col, Form, Row } from 'react-bootstrap'
 import MyEditor, { EditorContent } from '../MyEditor';
-
-import './answers.css'
 
 interface EditorAnswer {
     editorContent: EditorContent;
@@ -65,7 +63,7 @@ const MultipleChoice = () => {
     };
 
     return (
-        <React.Fragment>
+        <div className='mb-4'>
             <Row>
                 {editors.map((editor, index) => (
                     <Col md={6} key={index} className='answer-editor'>
@@ -84,12 +82,12 @@ const MultipleChoice = () => {
                             </Badge>
                         )}
                         <MyEditor value={editor.editorContent} onChange={(content) => handleEditorChange(index, content)} />
-                        <Button size='sm' onClick={() => handleRemoveEditor(index)}>Remove Editor</Button>
+                        <Button size='sm' title='Remove Choice' variant='danger' onClick={() => handleRemoveEditor(index)}><FontAwesomeIcon icon={faTrash} /></Button>
                     </Col>
                 ))}
             </Row>
-            <Button size='sm' onClick={handleAddEditor} className='mt-1'>Add New Choice</Button>
-        </React.Fragment>
+            <Button size='sm' onClick={handleAddEditor} className='mt-1'><FontAwesomeIcon icon={faAdd} /> Add New Choice</Button>
+        </div>
 
     )
 }

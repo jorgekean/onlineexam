@@ -9,6 +9,8 @@ import DexieUtils from '../../utils/dexie-utils'
 
 // import { tableData, tableColumns } from "./data";
 
+import './questions.css'
+
 const tableColumns = [
     {
         Header: "Question Type",
