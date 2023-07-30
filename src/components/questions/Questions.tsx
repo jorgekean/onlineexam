@@ -85,7 +85,13 @@ const Questions: React.FC<QuestionsProps> = ({ updateListMode, setSelectedRow })
                 </div>
             </Card.Header>
             <Card.Body>
-                <MyTable columns={tableColumns} data={questions as []} onEdit={(e) => handleOnEdit(e)} onDelete={(e) => handleOnDelete(e)} />
+                <MyTable
+                    columns={tableColumns}
+                    data={questions as []}
+                    onEdit={(e) => handleOnEdit(e)}
+                    onDelete={(e) => handleOnDelete(e)}
+                    useDangerouslySetInnerHTM={true}
+                />
             </Card.Body>
         </Card>
 

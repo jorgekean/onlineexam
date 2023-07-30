@@ -21,10 +21,11 @@ import defaultAvatar from "../../assets/img/avatars/default.png"
 interface CustomTableOptions<D extends object> extends TableOptions<D> {
     onDelete?: (rowData: D) => void;
     onEdit?: (rowData: D) => void;
+    useDangerouslySetInnerHTM?: boolean;
 }
 
 const MyTable = (props: CustomTableOptions<Record<string, unknown>>) => {
-    const { columns, data, onDelete, onEdit } = props;
+    const { columns, data, onDelete, onEdit, useDangerouslySetInnerHTM } = props;
 
     const {
         getTableProps,
@@ -84,7 +85,11 @@ const MyTable = (props: CustomTableOptions<Record<string, unknown>>) => {
                                                                 className="rounded-circle my-n1"
                                                                 alt="Avatar"
                                                             />
-                                                            : cell.render("Cell")}
+                                                            : useDangerouslySetInnerHTM ? ( // Check if htmlToPlainText is provided
+                                                                <div dangerouslySetInnerHTML={{ __html: cell.value }} />  // Apply htmlToPlainText if it's not undefined
+                                                            ) : (
+                                                                cell.render('Cell') // Render the cell as it is if htmlToPlainText is not provided
+                                                            )}
                                                 </td>
                                             );
                                         })}
