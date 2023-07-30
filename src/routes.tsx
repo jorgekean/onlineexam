@@ -11,12 +11,12 @@ import LandingLayout from "./layouts/Landing";
 // Guards
 import AuthGuard from "./components/guards/AuthGuard";
 import Exams from "./pages/exams/Exams";
-import Candidates from "./components/candidates/Candidates";
+import Students from "./components/students/Students";
 import Questions from "./pages/questions/Questions";
 import Statistics from "./pages/statistics/Statistics";
 import Notifications from "./pages/notifications/Notifications";
 import { Settings } from "react-feather";
-import CandidatesPage from "./pages/candidates/Candidates";
+import StudentsPage from "./pages/students/Students";
 import Sections from "./pages/settings/sections/Sections";
 import Groups from "./pages/settings/groups/Groups";
 import { myAppConfig } from "./config";
@@ -75,8 +75,8 @@ const routes = [
         element: <AuthGuard><Exams /></AuthGuard>,
       },
       {
-        path: "candidates",
-        element: <AuthGuard><CandidatesPage /></AuthGuard>,
+        path: "students",
+        element: <AuthGuard><StudentsPage /></AuthGuard>,
       },
       {
         path: "questions",

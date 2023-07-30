@@ -2,10 +2,10 @@ import React, { ReactNode, useState } from 'react'
 import { Button, Card, Container, Row, Col } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async';
 import { Link, Outlet } from 'react-router-dom'
-import Candidates from '../../components/candidates/Candidates';
+import Students from '../../components/students/Students';
 import DidYouKnow from '../../components/wiki/DidYouKnow';
 import RelatedTasks from '../../components/relatedtask/RelatedTasks';
-import CandidatesForm, { CandidateModel } from '../../components/candidates/CandidatesForm';
+import StudentsForm, { StudentModel } from '../../components/students/StudentsForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudArrowDown, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -17,32 +17,32 @@ const wikiItems = [
     'Integer vitae elit ut nisl pharetra dictum eget at mauris. Cras nec fermentum eros.'
 ];
 
-interface CandidateProps {
+interface StudentProps {
     children?: ReactNode;
 }
 
-const CandidatesPage: React.FC<CandidateProps> = ({ children }) => {
+const StudentsPage: React.FC<StudentProps> = ({ children }) => {
     const [listMode, setListMode] = useState<boolean>(true);
-    const [candidate, setCandidate] = useState<CandidateModel | undefined>(undefined)
+    const [student, setStudent] = useState<StudentModel | undefined>(undefined)
 
-    // Function to update the listMode state from the Candidates and CandidatesCreate components
+    // Function to update the listMode state from the Students and StudentsCreate components
     const updateListMode = (mode: boolean) => {
         setListMode(mode);
     };
 
-    const setSelectedCandidate = (model: CandidateModel | undefined) => {
-        setCandidate(model);
+    const setSelectedStudent = (model: StudentModel | undefined) => {
+        setStudent(model);
     };
 
     return (
         <React.Fragment>
-            <Helmet title="Candidate" />
+            <Helmet title="Student" />
             <Container fluid className="p-0">
                 {/* <h1 className="h3 mb-3">Create your onlineexam Account</h1> */}
 
                 <Row>
                     <Col lg="8">
-                        {listMode ? <Candidates updateListMode={updateListMode} setSelectedRow={setSelectedCandidate} /> : <CandidatesForm updateListMode={updateListMode} candidate={candidate} />}
+                        {listMode ? <Students updateListMode={updateListMode} setSelectedRow={setSelectedStudent} /> : <StudentsForm updateListMode={updateListMode} student={student} />}
                     </Col>
                     <Col lg="4">
                         <DidYouKnow items={wikiItems} />
@@ -55,4 +55,4 @@ const CandidatesPage: React.FC<CandidateProps> = ({ children }) => {
     )
 }
 
-export default CandidatesPage
+export default StudentsPage

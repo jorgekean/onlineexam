@@ -25,7 +25,7 @@ const RelatedTasks: React.FC<RelatedTasksProps> = ({ children }) => {
                         <>
                             <div className="border-bottom pb-2">
                                 <FontAwesomeIcon size='2x' icon={faCloudArrowUp} style={{ marginRight: '8px' }} />{' '}
-                                <Link to={''} className=''>Import Candidates</Link>
+                                <Link to={''} className=''>Import Students</Link>
                             </div>
                             <div className="border-bottom py-2">
                                 <FontAwesomeIcon size='2x' icon={faCloudArrowDown} style={{ marginRight: '8px' }} />{' '}

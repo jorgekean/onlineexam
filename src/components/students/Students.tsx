@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
 import MyTable from '../tables/MyTable'
-import { CandidateModel } from './CandidatesForm'
+import { StudentModel } from './StudentsForm'
 import NotyfContext from '../../contexts/NotyfContext';
 import DexieUtils from '../../utils/dexie-utils'
 
@@ -28,36 +28,36 @@ const tableColumns = [
     },
     {
         Header: "Group",
-        accessor: "candidateGroup",
+        accessor: "studentGroup",
     }
 ];
 
-interface CandidatesProps {
+interface StudentsProps {
     // listMode?: boolean;
     updateListMode: (mode: boolean) => void;
-    setSelectedRow: (model: CandidateModel | undefined) => void;
+    setSelectedRow: (model: StudentModel | undefined) => void;
 }
 
-const Candidates: React.FC<CandidatesProps> = ({ updateListMode, setSelectedRow }) => {
-    const [candidates, setCandidates] = useState<CandidateModel[]>([]);
-    const [dexieUtils] = useState(DexieUtils<CandidateModel>({ tableName: 'candidates' }));
+const Students: React.FC<StudentsProps> = ({ updateListMode, setSelectedRow }) => {
+    const [students, setStudents] = useState<StudentModel[]>([]);
+    const [dexieUtils] = useState(DexieUtils<StudentModel>({ tableName: 'students' }));
     const notyf = useContext(NotyfContext);
 
     useEffect(() => {
         const fetchData = async () => {
-            await getCandidates()
+            await getStudents()
         };
         fetchData();
     }, []);
 
-    const getCandidates = async () => {
+    const getStudents = async () => {
         var list = await dexieUtils.getAll();
-        const candidatesWithDisplayName = list.map((candidate) => ({
-            ...candidate,
-            displayName: candidate.firstName + ' ' + candidate.lastName,
+        const studentsWithDisplayName = list.map((student) => ({
+            ...student,
+            displayName: student.firstName + ' ' + student.lastName,
         }));
 
-        setCandidates(candidatesWithDisplayName)
+        setStudents(studentsWithDisplayName)
     }
 
     const handleOnCreate = async () => {
@@ -67,7 +67,7 @@ const Candidates: React.FC<CandidatesProps> = ({ updateListMode, setSelectedRow 
 
     const handleOnEdit = async (data: any) => {
         updateListMode(false)// show create/edit form             
-        setSelectedRow(data as CandidateModel)
+        setSelectedRow(data as StudentModel)
     }
 
     const handleOnDelete = async (data: any) => {
@@ -76,14 +76,14 @@ const Candidates: React.FC<CandidatesProps> = ({ updateListMode, setSelectedRow 
         // Show a success message
         notyf.open({
             background: "#4BBF73",
-            message: "Candidates deleted!",
+            message: "Students deleted!",
             position: {
                 x: "right",
                 y: "bottom"
             }
         })
 
-        getCandidates()
+        getStudents()
 
     }
 
@@ -91,7 +91,7 @@ const Candidates: React.FC<CandidatesProps> = ({ updateListMode, setSelectedRow 
         <Card>
             <Card.Header>
                 <div className='d-flex justify-content-between align-items-center'>
-                    <h4>Candidates</h4>
+                    <h4>Students</h4>
                     <div className='d-flex gap-1'>
                         <Button onClick={() => handleOnCreate()}><FontAwesomeIcon icon={faPlus} /> Create</Button>
                         <Dropdown>
@@ -109,11 +109,11 @@ const Candidates: React.FC<CandidatesProps> = ({ updateListMode, setSelectedRow 
                 </div>
             </Card.Header>
             <Card.Body>
-                <MyTable columns={tableColumns} data={candidates as []} onEdit={(e) => handleOnEdit(e)} onDelete={(e) => handleOnDelete(e)} />
+                <MyTable columns={tableColumns} data={students as []} onEdit={(e) => handleOnEdit(e)} onDelete={(e) => handleOnDelete(e)} />
             </Card.Body>
         </Card>
 
     )
 }
 
-export default Candidates
+export default Students

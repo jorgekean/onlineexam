@@ -41,7 +41,7 @@ const SectionsPage: React.FC<SectionProps> = ({ children }) => {
                         <RelatedTasks>
                             <div className="border-bottom pb-2">
                                 <FontAwesomeIcon size='2x' icon={faCloudArrowUp} className='me-3' />{' '}
-                                <Link to={''} className=''>Import Candidates</Link>
+                                <Link to={''} className=''>Import Students</Link>
                             </div>
                             <div className="border-bottom pb-2">
                                 <FontAwesomeIcon size='2x' icon={faCloudArrowDown} className='me-3' />{' '}

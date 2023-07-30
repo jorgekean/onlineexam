@@ -8,20 +8,20 @@ import DexieUtils from '../../utils/dexie-utils';
 import NotyfContext from '../../contexts/NotyfContext';
 import { GroupModel } from '../groups/GroupsForm';
 
-interface CandidatesProps {
+interface StudentsProps {
     // listMode: boolean;
     updateListMode: (mode: boolean) => void;
-    candidate?: CandidateModel;
+    student?: StudentModel;
 }
 
-export interface CandidateModel {
+export interface StudentModel {
     id: string;
     firstName: string;
     lastName: string;
     email: string;
     userName: string;
     password: string;
-    candidateGroup: string;
+    studentGroup: string;
     mobile: string;
     uniqueIdentification: string;
     uniqueIdentificationNumber: string;
@@ -34,34 +34,34 @@ export interface CandidateModel {
 }
 
 
-const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }) => {
+const StudentsForm: React.FC<StudentsProps> = ({ updateListMode, student }) => {
 
     // Initialize the form state with default values
-    const initialFormState: CandidateModel = {
-        id: candidate ? candidate.id : '',
-        displayName: candidate ? candidate.displayName : '',
-        firstName: candidate ? candidate.firstName : '',
-        lastName: candidate ? candidate.lastName : '',
-        email: candidate ? candidate.email : '',
-        userName: candidate ? candidate.userName : '',
-        password: candidate ? candidate.password : '',
-        candidateGroup: candidate ? candidate.candidateGroup : '',
-        mobile: candidate ? candidate.mobile : '',
-        uniqueIdentification: candidate ? candidate.uniqueIdentification : '',
-        uniqueIdentificationNumber: candidate ? candidate.uniqueIdentificationNumber : '',
-        specialNeeds: candidate ? candidate.specialNeeds : 'false',
-        active: candidate ? candidate.active : 'true',
-        sendCredentials: candidate ? candidate.sendCredentials : false,
-        referenceId: candidate ? candidate.referenceId : '',
-        moreDetails: candidate ? candidate.moreDetails : ''
+    const initialFormState: StudentModel = {
+        id: student ? student.id : '',
+        displayName: student ? student.displayName : '',
+        firstName: student ? student.firstName : '',
+        lastName: student ? student.lastName : '',
+        email: student ? student.email : '',
+        userName: student ? student.userName : '',
+        password: student ? student.password : '',
+        studentGroup: student ? student.studentGroup : '',
+        mobile: student ? student.mobile : '',
+        uniqueIdentification: student ? student.uniqueIdentification : '',
+        uniqueIdentificationNumber: student ? student.uniqueIdentificationNumber : '',
+        specialNeeds: student ? student.specialNeeds : 'false',
+        active: student ? student.active : 'true',
+        sendCredentials: student ? student.sendCredentials : false,
+        referenceId: student ? student.referenceId : '',
+        moreDetails: student ? student.moreDetails : ''
     };
 
-    const [formState, setFormState] = useState<CandidateModel>(initialFormState);
-    const [dexieUtils] = useState(DexieUtils<CandidateModel>({ tableName: 'candidates' }));
+    const [formState, setFormState] = useState<StudentModel>(initialFormState);
+    const [dexieUtils] = useState(DexieUtils<StudentModel>({ tableName: 'students' }));
     const [groupDexieUtils] = useState(DexieUtils<GroupModel>({ tableName: 'groups' }));
     const notyf = useContext(NotyfContext);
     // Add a state to track errors for each form field
-    const [errors, setErrors] = useState<Partial<CandidateModel>>({});
+    const [errors, setErrors] = useState<Partial<StudentModel>>({});
     const [groupOptions, setGroupOptions] = useState<{ value: string, label: string }[]>([]);
 
 
@@ -119,7 +119,7 @@ const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            if (candidate) {
+            if (student) {
                 onUpdate()
             } else {
                 onSave()
@@ -131,7 +131,7 @@ const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }
             // Show a success message
             notyf.open({
                 background: "#4BBF73",
-                message: "Candidates saved!",
+                message: "Students saved!",
                 position: {
                     x: "right",
                     y: "bottom"
@@ -141,7 +141,7 @@ const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }
             // go back to list
             updateListMode(true)
         } catch (error) {
-            console.error('Error adding candidate:', error);
+            console.error('Error adding student:', error);
             // Do error handling here...
         }
     };
@@ -156,7 +156,7 @@ const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }
         <Card>
             <Card.Header>
                 <div className='d-flex justify-content-between align-items-center'>
-                    <h4>Add New Candidate</h4>
+                    <h4>Add New Student</h4>
                     <div className='d-flex gap-1'>
                         <Button onClick={() => updateListMode(true)}><FontAwesomeIcon icon={faList} /> List</Button>
                     </div>
@@ -223,23 +223,23 @@ const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }
                         />  {/*add show PW functionality */}
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Candidate Group</Form.Label>
+                        <Form.Label>Student Group</Form.Label>
                         <Select
                             className={`react-select-container ${errors.lastName ? 'is-invalid' : ''}`}
                             classNamePrefix="react-select"
                             options={groupOptions}
                             isSearchable
-                            value={groupOptions.find((option) => option.value === formState.candidateGroup)}
+                            value={groupOptions.find((option) => option.value === formState.studentGroup)}
                             onChange={(selectedOption) => {
                                 if (selectedOption) {
                                     setFormState((prevState) => ({
                                         ...prevState,
-                                        candidateGroup: selectedOption.value,
+                                        studentGroup: selectedOption.value,
                                     }));
                                 } else {
                                     setFormState((prevState) => ({
                                         ...prevState,
-                                        candidateGroup: '',
+                                        studentGroup: '',
                                     }));
                                 }
                             }}
@@ -366,7 +366,7 @@ const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }
                             name='sendCredentials'
                             checked={formState.sendCredentials}
                             onChange={handleInputChange}
-                            label={<div> Send username & passowrd to this candidate <FontAwesomeIcon icon={faQuestionCircle} />
+                            label={<div> Send username & passowrd to this student <FontAwesomeIcon icon={faQuestionCircle} />
                                 <Link to={''}>Email Settings & Templates</Link>
                             </div>}
                         />
@@ -381,4 +381,4 @@ const CandidatesForm: React.FC<CandidatesProps> = ({ updateListMode, candidate }
     )
 }
 
-export default CandidatesForm
+export default StudentsForm

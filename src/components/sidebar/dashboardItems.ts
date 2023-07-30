@@ -32,9 +32,9 @@ const pagesSection = [
     title: "Exams",
   },
   {
-    href: `/${myAppConfig.baseURL}/candidates`,
+    href: `/${myAppConfig.baseURL}/students`,
     icon: faUsers,
-    title: "Candidates",
+    title: "Students",
   },
   {
     href: `/${myAppConfig.baseURL}/questions`,
