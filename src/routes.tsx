@@ -19,6 +19,7 @@ import { Settings } from "react-feather";
 import CandidatesPage from "./pages/candidates/Candidates";
 import Sections from "./pages/settings/sections/Sections";
 import Groups from "./pages/settings/groups/Groups";
+import { myAppConfig } from "./config";
 
 // Landing
 const Landing = lazy(() => import("./pages/landing/Landing"));
@@ -48,13 +49,11 @@ const SignIn = lazy(() => import("./pages/auth/SignIn"));
 const SignUp = lazy(() => import("./pages/auth/SignUp"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 
-
-export const baseURL: string = "onlineexam";
 // Protected routes
 
 const routes = [
   {
-    path: `${baseURL}/`,
+    path: `${myAppConfig.baseURL}/`,
     element: <DashboardLayout />,
     children: [
       {
@@ -64,7 +63,7 @@ const routes = [
     ],
   },
   {
-    path: `${baseURL}/`,
+    path: `${myAppConfig.baseURL}/`,
     element: <DashboardLayout />,
     children: [
       {
@@ -94,7 +93,7 @@ const routes = [
     ],
   },
   {
-    path: `${baseURL}/settings`,
+    path: `${myAppConfig.baseURL}/settings`,
     element: <DashboardLayout />,
     children: [
       {
@@ -122,7 +121,7 @@ const routes = [
   //   ]
   // },
   {
-    path: `${baseURL}/auth`,
+    path: `${myAppConfig.baseURL}/auth`,
     element: <AuthLayout />,
     children: [
       {
@@ -148,7 +147,7 @@ const routes = [
     ],
   },
   {
-    path: `${baseURL}/auth`,
+    path: `${myAppConfig.baseURL}/auth`,
     element: <AuthSignUpLayout />,
     children: [
       {

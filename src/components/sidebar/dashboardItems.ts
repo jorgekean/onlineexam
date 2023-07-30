@@ -17,36 +17,37 @@ import {
 } from "react-feather";
 
 import { faUsers, faHome, faBook, faGear, faQuestion, faBarChart, faBell, faFolder } from "@fortawesome/free-solid-svg-icons";
-export const baseURL: string = "/onlineexam";
+import { myAppConfig } from "../../config";
+// export const baseURL: string = "/onlineexam";
 
 const pagesSection = [
   {
-    href: `${baseURL}/dashboard`,
+    href: `/${myAppConfig.baseURL}/dashboard`,
     icon: faHome,
     title: "Dashboards"
   },
   {
-    href: `${baseURL}/exams`,
+    href: `/${myAppConfig.baseURL}/exams`,
     icon: faBook,
     title: "Exams",
   },
   {
-    href: `${baseURL}/candidates`,
+    href: `/${myAppConfig.baseURL}/candidates`,
     icon: faUsers,
     title: "Candidates",
   },
   {
-    href: `${baseURL}/questions`,
+    href: `/${myAppConfig.baseURL}/questions`,
     icon: faQuestion,
     title: "Questions",
   },
   {
-    href: `${baseURL}/statistics`,
+    href: `/${myAppConfig.baseURL}/statistics`,
     icon: faBarChart,
     title: "Statistics",
   },
   {
-    href: `${baseURL}/notifications`,
+    href: `/${myAppConfig.baseURL}/notifications`,
     icon: faBell,
     title: "Notifications",
   }
@@ -54,12 +55,12 @@ const pagesSection = [
 
 const settingsPagesSection = [
   {
-    href: `${baseURL}/settings/sections`,
+    href: `/${myAppConfig.baseURL}/settings/sections`,
     icon: faFolder,
     title: "Sections"
   },
   {
-    href: `${baseURL}/settings/groups`,
+    href: `/${myAppConfig.baseURL}/settings/groups`,
     icon: faUsers,
     title: "Groups",
   }

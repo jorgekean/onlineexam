@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 import useAuth from "../../hooks/useAuth";
+import { myAppConfig } from "../../config";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ function SignUp() {
             values.password,
             values.howDidYouFound
           );
-          navigate("/onlineexam/auth/sign-in");
+          navigate(`/${myAppConfig.baseURL}/auth/sign-in`);
         } catch (error: any) {
           const message = error.message || "Something went wrong";
 
@@ -136,10 +137,9 @@ function SignUp() {
                   <Form.Check inline label={
                     <span>
                       I accept OnlineExam's{' '}
-                      <Link to="/onlineexam/">Privacy Policy</Link> and <Link to="/">Terms of Use</Link>
+                      <Link to={`/${myAppConfig.baseURL}/`}>Privacy Policy</Link> and <Link to="/">Terms of Use</Link>
                     </span>
                   } />
-                  {/* <Link to="/auth/reset-password">I accept onlineexam's Privacy Policy and Terms of Use</Link> */}
                 </small>
                 <div className="d-grid gap-2 mt-3">
                   <Button

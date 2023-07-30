@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 import useAuth from "../../hooks/useAuth";
+import { myAppConfig } from "../../config";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ function SignIn() {
         try {
           await signIn(values.email, values.password);
 
-          navigate("/onlineexam/dashboard");
+          navigate(`/${myAppConfig.baseURL}/dashboard`);
         } catch (error: any) {
           const message = error.message || "Something went wrong";
 
@@ -120,7 +121,7 @@ function SignIn() {
                 </Form.Control.Feedback>
               )}
               <small>
-                <Link to="/onlineexam/auth/reset-password">Forgot password?</Link>
+                <Link to={`/${myAppConfig.baseURL}/auth/reset-password`}>Forgot password?</Link>
               </small>
             </Form.Group>
 

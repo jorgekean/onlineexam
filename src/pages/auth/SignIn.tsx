@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import SignIn from "../../components/auth/SignIn";
 
 import logo from "../../assets/img/bee-see-new-logo-small.png";
+import { myAppConfig } from "../../config";
 
 const SignInPage = () => (
   <React.Fragment>
@@ -31,7 +32,7 @@ const SignInPage = () => (
       Please Contact <b><a href="mailto:support@onlineexam.net">support@onlineexam.net</a></b> in case of any query.
     </div>
     <div className="text-center mb-3 small">
-      Don't have a onlineexam account? <Link to="/onlineexam/auth/sign-up">Create for free</Link>
+      Don't have a onlineexam account? <Link to={`/${myAppConfig.baseURL}/auth/sign-up`}>Create for free</Link>
     </div>
   </React.Fragment>
 );

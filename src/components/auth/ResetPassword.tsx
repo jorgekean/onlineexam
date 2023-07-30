@@ -7,6 +7,7 @@ import { Alert, Button, Form } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { myAppConfig } from "../../config";
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function ResetPassword() {
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           resetPassword(values.email);
-          navigate("/onlineexam/auth/sign-in");
+          navigate(`/${myAppConfig.baseURL}/auth/sign-in`);
         } catch (error: any) {
           const message = error.message || "Something went wrong";
 
@@ -81,7 +82,7 @@ function ResetPassword() {
             </Button>
           </div>
           <small>
-            <Link to="/onlineexam/auth/sign-in"><FontAwesomeIcon icon={faArrowLeft} /> back to Login</Link>
+            <Link to={`/${myAppConfig.baseURL}/auth/sign-in`}><FontAwesomeIcon icon={faArrowLeft} /> back to Login</Link>
           </small>
         </Form>
       )}

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/img/bee-see-new-logo-small.png";
 
 import ResetPassword from "../../components/auth/ResetPassword";
+import { myAppConfig } from "../../config";
 
 const ResetPasswordPage = () => (
   <React.Fragment>
@@ -32,7 +33,7 @@ const ResetPasswordPage = () => (
       Please Contact <b><a href="mailto:support@onlineexam.net">support@onlineexam.net</a></b> in case of any query.
     </div>
     <div className="text-center mb-1 small">
-      Don't have a onlineexam account? <Link to="/auth/sign-up">Create for free</Link>
+      Don't have a onlineexam account? <Link to={`/${myAppConfig.baseURL}/auth/sign-up`}>Create for free</Link>
     </div>
   </React.Fragment>
 );
