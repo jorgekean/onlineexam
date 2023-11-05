@@ -7,7 +7,7 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 import { resolve } from "path";
 
 export default defineConfig({
-  base: "/",
+  base: "/onlineexam",
   plugins: [
     react(),
     svgrPlugin(),
