@@ -94,7 +94,7 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 
 const routes = [
   {
-    path: `${myAppConfig.baseURL}/`,
+    path: `onlineexam/${myAppConfig.baseURL}/`,
     element: <LandingLayout />,
     children: [
       {
