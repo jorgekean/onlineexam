@@ -4,8 +4,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
 import MyTable from '../tables/MyTable'
 import { StudentModel } from './StudentsForm'
+import { StudentDataModel } from './StudentsProfile'
+// import { StudentModel1 } from './StudentsProfile'
+import { useNavigate } from "react-router-dom";
 import NotyfContext from '../../contexts/NotyfContext';
 import DexieUtils from '../../utils/dexie-utils'
+import { StudentInitialData } from '../../initialdata'
 
 // import { tableData, tableColumns } from "./data";
 
@@ -13,6 +17,7 @@ const tableColumns = [
     {
         Header: "",
         accessor: "avatar",
+        disableSortBy: true
     },
     {
         Header: "Name",
@@ -22,23 +27,28 @@ const tableColumns = [
         Header: "Email",
         accessor: "email",
     },
+    /*
     {
         Header: "User Name",
         accessor: "userName",
     },
     {
-        Header: "Group",
-        accessor: "studentGroup",
+        Header: "Subject",
+        accessor: "studentSubject",
     }
+    */
 ];
 
 interface StudentsProps {
     // listMode?: boolean;
+    updateview: (mode: boolean) => void;
     updateListMode: (mode: boolean) => void;
     setSelectedRow: (model: StudentModel | undefined) => void;
+    student?: StudentDataModel;
+    onViewProfile: (mode: boolean) => void;
 }
 
-const Students: React.FC<StudentsProps> = ({ updateListMode, setSelectedRow }) => {
+const Students: React.FC<StudentsProps> = ({ updateListMode, setSelectedRow, updateview, onViewProfile }) => {
     const [students, setStudents] = useState<StudentModel[]>([]);
     const [dexieUtils] = useState(DexieUtils<StudentModel>({ tableName: 'students' }));
     const notyf = useContext(NotyfContext);
@@ -64,9 +74,17 @@ const Students: React.FC<StudentsProps> = ({ updateListMode, setSelectedRow }) =
         updateListMode(false)// show create/edit form             
         setSelectedRow(undefined)
     }
+    const HandleviewProfile = async (data: any) => {
+        onViewProfile(false)// show profile/list            
+        setSelectedRow(data as StudentModel)
+    }
 
     const handleOnEdit = async (data: any) => {
         updateListMode(false)// show create/edit form             
+        setSelectedRow(data as StudentModel)
+    }
+    const HandleOnView = async (data: any) => {
+        updateview(false)// show student profile/ list
         setSelectedRow(data as StudentModel)
     }
 
@@ -109,9 +127,17 @@ const Students: React.FC<StudentsProps> = ({ updateListMode, setSelectedRow }) =
                 </div>
             </Card.Header>
             <Card.Body>
-                <MyTable columns={tableColumns} data={students as []} onEdit={(e) => handleOnEdit(e)} onDelete={(e) => handleOnDelete(e)} />
+                <MyTable columns={tableColumns}
+                    data={students as []}
+                    // data={StudentInitialData as []}
+
+                    onEdit={(e) => handleOnEdit(e)}
+                    onDelete={(e) => handleOnDelete(e)}
+                    onView={(e) => { HandleOnView(e); HandleviewProfile(e); }}
+
+                />
             </Card.Body>
-        </Card>
+        </Card >
 
     )
 }

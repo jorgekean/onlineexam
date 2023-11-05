@@ -14,7 +14,6 @@ function DexieUtils<T extends Entity>({ tableName }: DexieUtilsProps<T>) {
     const [db] = useState(new Dexie(tableName));
 
     useEffect(() => {
-        // console.log((db.verno))
         if (db.verno < 1)
             db.version(1).stores({ [tableName]: 'id' });
         // db.open();
@@ -36,6 +35,15 @@ function DexieUtils<T extends Entity>({ tableName }: DexieUtilsProps<T>) {
         return id;
     }
 
+    // use initial seeding of data
+    async function addWithId(entity: T): Promise<string> {
+        // const id = uuidv4();
+        const entityWithId = { ...entity };
+        await db.table<T>(tableName).add(entityWithId);
+
+        return entityWithId.id as string;
+    }
+
     async function update(entity: T): Promise<void> {
         const { id, ...rest } = entity;
         if (id) {
@@ -51,13 +59,24 @@ function DexieUtils<T extends Entity>({ tableName }: DexieUtilsProps<T>) {
         return db.table<T>(tableName).clear();
     }
 
+    async function getByIds(ids: string[]): Promise<T[]> {
+        if (!ids || ids.length === 0) {
+            return [];
+        }
+
+        return db.table<T>(tableName).where('id').anyOf(ids).toArray();
+    }
+
+
     return {
         getAll,
         get,
         add,
         update,
         deleteEntity,
-        clearEntity
+        clearEntity,
+        getByIds,
+        addWithId
     };
 }
 

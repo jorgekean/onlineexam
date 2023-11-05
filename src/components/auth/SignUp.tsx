@@ -43,7 +43,7 @@ function SignUp() {
             values.password,
             values.howDidYouFound
           );
-          navigate(`/${myAppConfig.baseURL}/auth/sign-in`);
+          navigate(`${myAppConfig.baseURL}/auth/sign-in`);
         } catch (error: any) {
           const message = error.message || "Something went wrong";
 
@@ -65,8 +65,6 @@ function SignUp() {
         <>
           <Card>
             <Card.Header>
-              <Card.Title>Create your onlineexam Account</Card.Title>
-
             </Card.Header>
             <Card.Body>
               <Form onSubmit={handleSubmit}>
@@ -77,11 +75,11 @@ function SignUp() {
                 )}
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Full Name</Form.Label>
                   <Form.Control
-                    type="email"
-                    name="email"
-                    placeholder="Email address"
+                    type="text"
+                    name="fullName"
+                    placeholder=""
                     value={values.email}
                     isInvalid={Boolean(touched.email && errors.email)}
                     onBlur={handleBlur}
@@ -94,50 +92,44 @@ function SignUp() {
                   )}
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>Learner Reference Number (LRN)</Form.Label>
                   <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={values.password}
-                    isInvalid={Boolean(touched.password && errors.password)}
+                    type="text"
+                    name="studentNumber"
+                    placeholder=""
+                    value={values.email}
+                    isInvalid={Boolean(touched.email && errors.email)}
                     onBlur={handleBlur}
                     onChange={handleChange}
                   />
-                  {!!touched.password && (
+                  {!!touched.email && (
                     <Form.Control.Feedback type="invalid">
-                      {errors.password}
+                      {errors.email}
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>How did you find out about onlineexam?</Form.Label>
-                  <Form.Select
-                    name="howDidYouFound"
-                    value={values.howDidYouFound}
-                    onChange={handleChange}
+                  <Form.Label>Email Address</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    placeholder=""
+                    value={values.email}
+                    isInvalid={Boolean(touched.email && errors.email)}
                     onBlur={handleBlur}
-                    isInvalid={touched.howDidYouFound && !!errors.howDidYouFound}
-                  >
-                    <option value="">Select an option</option>
-                    <option value="google_search">Google Search</option>
-                    <option value="facebook_ad">Facebook Ad</option>
-                    <option value="instagram_ad">Instagram Ad</option>
-                    <option value="twitter_ad">Tiwtter Ad</option>
-                    <option value="web_mobile_ad">Website/Mobile App Ad</option>
-                    <option value="other">Other</option>
-                  </Form.Select>
-                  {touched.howDidYouFound && (
+                    onChange={handleChange}
+                  />
+                  {!!touched.email && (
                     <Form.Control.Feedback type="invalid">
-                      {errors.howDidYouFound}
+                      {errors.email}
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
                 <small>
                   <Form.Check inline label={
                     <span>
-                      I accept OnlineExam's{' '}
-                      <Link to={`/${myAppConfig.baseURL}/`}>Privacy Policy</Link> and <Link to="/">Terms of Use</Link>
+                      I accept the{' '}
+                      <Link to={`${myAppConfig.baseURL}/`}>Privacy Policy</Link> and <Link to="/">Terms of Use</Link>
                     </span>
                   } />
                 </small>
@@ -148,11 +140,11 @@ function SignUp() {
                     size="lg"
                     disabled={isSubmitting}
                   >
-                    Sign up
+                    Register a Student Account
                   </Button>
                 </div>
                 <div className="text-center mt-3">
-                  Already have account? <Link to="/onlineexam/auth/sign-in">Log in</Link>
+                  Already have account? <Link to={`${myAppConfig.baseURL}/auth/sign-in`}>Log in</Link>
                 </div>
               </Form>
             </Card.Body>

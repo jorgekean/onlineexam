@@ -10,9 +10,9 @@ import { faCloudArrowDown, faCloudArrowUp } from '@fortawesome/free-solid-svg-ic
 import { Link } from 'react-router-dom';
 
 const wikiItems = [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    'Nulla facilisi. Sed tincidunt nisl sed ipsum interdum, at suscipit quam facilisis.',
-    'Fusce dapibus ex eget justo venenatis, sit amet bibendum dolor consectetur.'
+    'This is a database of questions available in the school that can be used to build exams.',
+    'Questions can be reused in multiple exams.',
+    'When a question is modified, the changes are reflected in all exams that link to it.'
 ];
 
 interface QuestionProps {
@@ -23,6 +23,8 @@ const QuestionsPage: React.FC<QuestionProps> = ({ children }) => {
     const [listMode, setListMode] = useState<boolean>(true);
     const [question, setQuestion] = useState<QuestionModel | undefined>(undefined)
 
+
+
     // Function to update the listMode state from the Questions and QuestionsCreate components
     const updateListMode = (mode: boolean) => {
         setListMode(mode);
@@ -32,26 +34,30 @@ const QuestionsPage: React.FC<QuestionProps> = ({ children }) => {
         setQuestion(model);
     };
 
+
+
     return (
         <React.Fragment>
             <Helmet title="Question" />
             <Container fluid className="p-0">
-                {/* <h1 className="h3 mb-3">Create your onlineexam Account</h1> */}
+                {/* <h1 className="h3 mb-3">Create your account</h1> */}
 
                 <Row>
                     <Col lg="8">
                         {listMode ? <Questions updateListMode={updateListMode} setSelectedRow={setSelectedQuestion} /> : <QuestionsForm updateListMode={updateListMode} question={question} />}
                     </Col>
                     <Col lg="4">
-                        <DidYouKnow items={wikiItems} />
+                        <DidYouKnow items={wikiItems} onViewProfile={function (mode: boolean): void {
+                            throw new Error('Function not implemented.');
+                        }} />
                         <RelatedTasks>
                             <div className="border-bottom pb-2">
                                 <FontAwesomeIcon size='2x' icon={faCloudArrowUp} style={{ marginRight: '8px' }} />{' '}
-                                <Link to={''} className=''>Import Questions</Link>
+                                <Link to={''} className=''>Import questions</Link>
                             </div>
                             <div className="border-bottom py-2">
                                 <FontAwesomeIcon size='2x' icon={faCloudArrowDown} style={{ marginRight: '8px' }} />{' '}
-                                <Link to={''}>Export your data</Link>
+                                <Link to={''}>Export questions</Link>
                             </div>
                         </RelatedTasks>
                     </Col>

@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 import Select from "react-select";
 import DexieUtils from '../../utils/dexie-utils';
 import NotyfContext from '../../contexts/NotyfContext';
-import { GroupModel } from '../groups/GroupsForm';
+import { SubjecModel } from '../subjects/SubjectForm';
 
-interface StudentsProps {
+interface StudentProps {
     // listMode: boolean;
     updateListMode: (mode: boolean) => void;
     student?: StudentModel;
@@ -21,7 +21,7 @@ export interface StudentModel {
     email: string;
     userName: string;
     password: string;
-    studentGroup: string;
+    studentSubjects?: { value: string, label: string }[];
     mobile: string;
     uniqueIdentification: string;
     uniqueIdentificationNumber: string;
@@ -31,10 +31,15 @@ export interface StudentModel {
     active: string;
     sendCredentials: boolean;
     displayName: string;
+    ExamCount: string;
+    AverageScores: string;
+    LastExam: string;
+    TimeTaken: string,
+
 }
 
 
-const StudentsForm: React.FC<StudentsProps> = ({ updateListMode, student }) => {
+const StudentsForm: React.FC<StudentProps> = ({ updateListMode, student }) => {
 
     // Initialize the form state with default values
     const initialFormState: StudentModel = {
@@ -45,7 +50,7 @@ const StudentsForm: React.FC<StudentsProps> = ({ updateListMode, student }) => {
         email: student ? student.email : '',
         userName: student ? student.userName : '',
         password: student ? student.password : '',
-        studentGroup: student ? student.studentGroup : '',
+        studentSubjects: student ? student.studentSubjects : [],
         mobile: student ? student.mobile : '',
         uniqueIdentification: student ? student.uniqueIdentification : '',
         uniqueIdentificationNumber: student ? student.uniqueIdentificationNumber : '',
@@ -53,29 +58,33 @@ const StudentsForm: React.FC<StudentsProps> = ({ updateListMode, student }) => {
         active: student ? student.active : 'true',
         sendCredentials: student ? student.sendCredentials : false,
         referenceId: student ? student.referenceId : '',
-        moreDetails: student ? student.moreDetails : ''
+        moreDetails: student ? student.moreDetails : '',
+        ExamCount: student ? student.ExamCount : '',
+        AverageScores: student ? student.AverageScores : '',
+        LastExam: student ? student.LastExam : '',
+        TimeTaken: student ? student.TimeTaken : '',
+
     };
 
     const [formState, setFormState] = useState<StudentModel>(initialFormState);
     const [dexieUtils] = useState(DexieUtils<StudentModel>({ tableName: 'students' }));
-    const [groupDexieUtils] = useState(DexieUtils<GroupModel>({ tableName: 'groups' }));
+    const [subjectDexieUtils] = useState(DexieUtils<SubjecModel>({ tableName: 'subjects' }));
     const notyf = useContext(NotyfContext);
     // Add a state to track errors for each form field
     const [errors, setErrors] = useState<Partial<StudentModel>>({});
-    const [groupOptions, setGroupOptions] = useState<{ value: string, label: string }[]>([]);
+    const [subjectOptions, setSubjectOptions] = useState<{ value: string, label: string }[]>([]);
 
 
     useEffect(() => {
         const fetchData = async () => {
+            const subjects = await subjectDexieUtils.getAll();
 
-            const groups = await groupDexieUtils.getAll();
-
-            // Map groups to options with value and label attributes
-            const options = groups.map(({ group, description }) => ({
-                value: group,
-                label: `${group} - ${description}`,
+            // Map subjects to options with value and label attributes
+            const options = subjects.map(({ subject, description }) => ({
+                value: subject,
+                label: `${subject} - ${description}`,
             }));
-            setGroupOptions(options)
+            setSubjectOptions(options)
         };
         fetchData();
     }, []);
@@ -223,27 +232,24 @@ const StudentsForm: React.FC<StudentsProps> = ({ updateListMode, student }) => {
                         />  {/*add show PW functionality */}
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Student Group</Form.Label>
+                        <Form.Label>Student Subject</Form.Label>
                         <Select
                             className={`react-select-container ${errors.lastName ? 'is-invalid' : ''}`}
                             classNamePrefix="react-select"
-                            options={groupOptions}
+                            // defaultValue={formState.studentSubjects}
+                            options={subjectOptions as []}
                             isSearchable
-                            value={groupOptions.find((option) => option.value === formState.studentGroup)}
-                            onChange={(selectedOption) => {
-                                if (selectedOption) {
-                                    setFormState((prevState) => ({
-                                        ...prevState,
-                                        studentGroup: selectedOption.value,
-                                    }));
-                                } else {
-                                    setFormState((prevState) => ({
-                                        ...prevState,
-                                        studentGroup: '',
-                                    }));
-                                }
+                            isMulti={true}
+                            closeMenuOnSelect={false}
+                            value={formState.studentSubjects}
+                            onChange={(selectedOptions) => {
+                                setFormState(
+                                    {
+                                        ...formState,
+                                        studentSubjects: selectedOptions as []
+                                    }
+                                )
                             }}
-                            required
                         />
                     </Form.Group>
                     <Form.Group className="mb-3">

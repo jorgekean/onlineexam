@@ -10,33 +10,40 @@ import Feed from "./Feed";
 import PieChart from "./PieChart";
 import Projects from "./Projects";
 import Statistics from "./Statistics";
-
+import TeacherAppointments from "../../../components/TeacherAppointments";
+import TeacherLatestExam from "../../../components/TeacherLatestExam"
 const Default = () => (
   <React.Fragment>
-    <Helmet title="Default Dashboard" />
+    <Helmet title="Dashboard" />
     <Container fluid className="p-0">
       <Header />
-      <Statistics />
       <Row>
         <Col lg="8" className="d-flex">
           <BarChart />
         </Col>
         <Col lg="4" className="d-flex">
-          <Feed />
+          {/* <SchoolDashboardPieChart /> */}
+          <Calendar />
+
         </Col>
       </Row>
       <Row>
-        <Col lg="6" xl="4" className="d-flex">
-          <Calendar />
+        <Col lg="4" className="d-flex">
+          <TeacherAppointments />
         </Col>
-        <Col lg="6" xl="4" className="d-flex">
-          <PieChart />
+        <Col lg="8" className="d-flex">
+          <TeacherLatestExam />
         </Col>
-        <Col lg="6" xl="4" className="d-flex">
+      </Row>
+      <Row>
+        <Col lg="8" className="d-flex">
+          <Projects />
+        </Col>
+        <Col lg="4" xl="4" className="d-flex">
           <Appointments />
         </Col>
       </Row>
-      <Projects />
+      {/* <Projects /> */}
     </Container>
   </React.Fragment>
 );

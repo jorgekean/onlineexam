@@ -3,10 +3,10 @@ import { Helmet } from "react-helmet-async";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import logo from "../../assets/img/bee-see-new-logo-small.png";
+import logo from "../../assets/img/logo.svg";
 
 import SignUp from "../../components/auth/SignUp";
-import SignUpSubscription from "../../components/auth/SignUpSubscription";
+
 
 
 const SignUpPage = () => (
@@ -17,29 +17,23 @@ const SignUpPage = () => (
         src={logo}
         alt="Logo"
         className="img-fluid"
-        style={{ maxWidth: '300px' }}
+        style={{ maxWidth: '200px', marginBottom: '10px' }}
       />
+      {<div className="lead"
+        style={{ height: '20px' }}
+      >
+      </div>}
     </div>
     <Container fluid className="p-0">
-      {/* <h1 className="h3 mb-3">Create your onlineexam Account</h1> */}
 
       <Row>
-        <Col lg="6">
-          <SignUp />
+        <Col lg="3">
         </Col>
         <Col lg="6">
-          <SignUpSubscription />
+          <SignUp />
         </Col>
       </Row>
     </Container>
-    {/* <Card>
-      <Card.Body>
-        <div className="m-sm-3">
-          <SignUp />
-          <SignUpSubscription />
-        </div>
-      </Card.Body>
-    </Card> */}
 
   </React.Fragment>
 );

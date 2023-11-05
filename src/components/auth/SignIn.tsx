@@ -12,12 +12,12 @@ import { myAppConfig } from "../../config";
 
 function SignIn() {
   const navigate = useNavigate();
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
 
   return (
     <Formik
       initialValues={{
-        email: "teacher1@beesee.ph",
+        email: "teacher1@eksam.ph",
         password: "@TEACHER1",
         submit: false,
       }}
@@ -32,7 +32,15 @@ function SignIn() {
         try {
           await signIn(values.email, values.password);
 
-          navigate(`/${myAppConfig.baseURL}/dashboard`);
+          navigate(`${myAppConfig.baseURL}/`);
+          // if (user?.role === 'teacher') {
+          //   navigate(`${myAppConfig.baseURL}/dashboard`);
+          // } else if (user?.role === 'student') {
+          //   navigate(`${myAppConfig.baseURL}/studentDashboard`);
+          // } else if (user?.role === 'schooladmin') {
+          //   navigate(`${myAppConfig.baseURL}/schoolDashboard`);
+          // }
+          // navigate(`${myAppConfig.baseURL}/${user?.role === 'student' && 'studentDashboard'}`);
         } catch (error: any) {
           const message = error.message || "Something went wrong";
 
@@ -85,12 +93,12 @@ function SignIn() {
             )}
 
             <Form.Group className="mb-3">
-              <Form.Label>Username or Email</Form.Label>
+              <Form.Label>Email Address</Form.Label>
               <Form.Control
                 size="lg"
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder=""
                 value={values.email}
                 isInvalid={Boolean(touched.email && errors.email)}
                 onBlur={handleBlur}
@@ -109,7 +117,7 @@ function SignIn() {
                 size="lg"
                 type="password"
                 name="password"
-                placeholder="Enter your password"
+                placeholder=""
                 value={values.password}
                 isInvalid={Boolean(touched.password && errors.password)}
                 onBlur={handleBlur}
@@ -121,7 +129,7 @@ function SignIn() {
                 </Form.Control.Feedback>
               )}
               <small>
-                <Link to={`/${myAppConfig.baseURL}/auth/reset-password`}>Forgot password?</Link>
+                <Link to={`${myAppConfig.baseURL}/auth/reset-password`}>Forgot password?</Link>
               </small>
             </Form.Group>
 

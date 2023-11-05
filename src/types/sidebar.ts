@@ -6,4 +6,5 @@ export type SidebarItemsType = {
   icon: IconDefinition;
   children: SidebarItemsType[];
   badge?: string;
+  role?: string;
 };

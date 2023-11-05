@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Dropdown } from "react-bootstrap";
 import { PieChart, Settings, User } from "react-feather";
 
@@ -6,10 +6,25 @@ import avatar1 from "../../assets/img/avatars/avatar.jpg";
 import JWTContext from "../../contexts/JWTContext";
 import useAuth from "../../hooks/useAuth";
 
+import { myAppConfig } from "../../config";
+import { useNavigate } from "react-router-dom";
+
 const NavbarUser = () => {
   const { user, signOut } = useAuth();
 
+  const navigate = useNavigate();
 
+  const onViewTecher = () => {
+    navigate(`${myAppConfig.baseURL}/teacherProfile`)
+  }
+
+  const onViewSchool = () => {
+    navigate(`${myAppConfig.baseURL}/schooProfile`)
+  }
+
+  const onViewStudent = () => {
+    navigate(`${myAppConfig.baseURL}/studentProfile`)
+  }
 
   return (
     <Dropdown className="nav-item" align="end">
@@ -29,17 +44,40 @@ const NavbarUser = () => {
         </Dropdown.Toggle>
       </span>
       <Dropdown.Menu>
-        <Dropdown.Item>
+        {/* {user?.role === '' ? console.log('nice') : console.log('hey')} */}
+
+        {user?.role === 'teacher' && <Dropdown.Item onClick={() => onViewTecher()} >
           <User size={18} className="align-middle me-2" />
-          Profile
+          Teacher Profile
+        </Dropdown.Item>}
+        {user?.role === 'schooladmin' && <Dropdown.Item onClick={() => onViewSchool()}>
+          <User size={18} className="align-middle me-2" />
+          School Profile
+        </Dropdown.Item>}
+        {user?.role === 'student' && <Dropdown.Item onClick={() => onViewStudent()}>
+          <User size={18} className="align-middle me-2" />
+          Student Profile
+        </Dropdown.Item>}
+
+
+
+        {/* <Dropdown.Item onClick={() => onViewTecher()} >
+          <User size={18} className="align-middle me-2" />
+          Teacher Profile
         </Dropdown.Item>
-        <Dropdown.Item>
-          <PieChart size={18} className="align-middle me-2" />
-          Analytics
+        <Dropdown.Item onClick={() => onViewSchool()}>
+          <User size={18} className="align-middle me-2" />
+          School Profile
         </Dropdown.Item>
+        <Dropdown.Item onClick={() => onViewStudent()}>
+          <User size={18} className="align-middle me-2" />
+          Student Profile
+        </Dropdown.Item> */}
+
+
         <Dropdown.Divider />
+
         <Dropdown.Item>Settings & Privacy</Dropdown.Item>
-        <Dropdown.Item>Help</Dropdown.Item>
         <Dropdown.Item onClick={signOut}>Sign out</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

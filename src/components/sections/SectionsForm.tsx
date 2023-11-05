@@ -1,6 +1,6 @@
 import { faList, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import Select from "react-select";
@@ -10,24 +10,31 @@ import NotyfContext from '../../contexts/NotyfContext';
 interface SectionsProps {
     // listMode?: boolean;
     updateListMode: (mode: boolean) => void;
+    section?: SectionModel;
 }
 
 export interface SectionModel {
     id: string;
     sectionName: string;
     sectionPath: string;
+    // sectionCount: number;
 }
 
-const SectionsForm: React.FC<SectionsProps> = ({ updateListMode }) => {
+const SectionsForm: React.FC<SectionsProps> = ({ updateListMode, section }) => {
     // Initialize the form state with default values
+    const [dexieUtils] = useState(DexieUtils<SectionModel>({ tableName: 'sections' }));
+    const [sections, setSections] = useState<SectionModel[]>([]);
+    let count = 0;
+
     const initialFormState: SectionModel = {
-        id: '',
-        sectionName: '',
-        sectionPath: ''
+        id: section ? section.id : '',
+        sectionName: section ? section.sectionName : '',
+        sectionPath: section ? section.sectionPath : '',
+        // sectionCount: count++
     };
 
     const [formState, setFormState] = useState<SectionModel>(initialFormState);
-    const [dexieUtils] = useState(DexieUtils<SectionModel>({ tableName: 'sections' }));
+
     const notyf = useContext(NotyfContext);
     // Add a state to track errors for each form field
     const [errors, setErrors] = useState<Partial<SectionModel>>({});
@@ -64,7 +71,7 @@ const SectionsForm: React.FC<SectionsProps> = ({ updateListMode }) => {
             // Show a success message
             notyf.open({
                 background: "#4BBF73",
-                message: "Sections saved!",
+                message: "Lesson Sections saved!",
                 position: {
                     x: "right",
                     y: "bottom"
@@ -83,7 +90,7 @@ const SectionsForm: React.FC<SectionsProps> = ({ updateListMode }) => {
         <Card>
             <Card.Header>
                 <div className='d-flex justify-content-between align-items-center'>
-                    <h4>Add New Section</h4>
+                    <h4>Add New Lesson Section</h4>
                     <div className='d-flex gap-1'>
                         <Button onClick={() => updateListMode(true)}><FontAwesomeIcon icon={faList} /> List</Button>
                     </div>
@@ -92,7 +99,7 @@ const SectionsForm: React.FC<SectionsProps> = ({ updateListMode }) => {
             <Card.Body>
                 <Form onSubmit={handleFormSubmit}>
                     <Form.Group className="mb-3">
-                        <Form.Label>Section Name</Form.Label>
+                        <Form.Label>Lesson Section Name</Form.Label>
                         <Form.Control
                             type="text"
                             name="sectionName"
@@ -104,7 +111,7 @@ const SectionsForm: React.FC<SectionsProps> = ({ updateListMode }) => {
                         />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Section Path</Form.Label>
+                        <Form.Label>Lesson Section Path</Form.Label>
                         <Form.Control
                             type="text"
                             name="sectionPath"

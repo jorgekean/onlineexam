@@ -10,6 +10,7 @@ interface RelatedTasksProps {
 }
 
 const RelatedTasks: React.FC<RelatedTasksProps> = ({ children }) => {
+
     return (
         <Card>
             <Card.Header>
@@ -23,14 +24,17 @@ const RelatedTasks: React.FC<RelatedTasksProps> = ({ children }) => {
                         </div>
                     ) :
                         <>
-                            <div className="border-bottom pb-2">
-                                <FontAwesomeIcon size='2x' icon={faCloudArrowUp} style={{ marginRight: '8px' }} />{' '}
-                                <Link to={''} className=''>Import Students</Link>
+                            <div>
+                                <div className="border-bottom pb-2">
+                                    <FontAwesomeIcon size='2x' icon={faCloudArrowUp} style={{ marginRight: '8px' }} />{' '}
+                                    <Link to={''} className=''>Import questions</Link>
+                                </div>
+                                <div className="border-bottom py-2">
+                                    <FontAwesomeIcon size='2x' icon={faCloudArrowDown} style={{ marginRight: '8px' }} />{' '}
+                                    <Link to={''}>Export questions</Link>
+                                </div>
                             </div>
-                            <div className="border-bottom py-2">
-                                <FontAwesomeIcon size='2x' icon={faCloudArrowDown} style={{ marginRight: '8px' }} />{' '}
-                                <Link to={''}>Export your data</Link>
-                            </div>
+
                         </>
                     }
                 </div>

@@ -54,7 +54,7 @@ const PieChart = () => {
             </Dropdown.Menu>
           </Dropdown>
         </div>
-        <Card.Title className="mb-0">Weekly sales</Card.Title>
+        <Card.Title className="mb-0">Top Teachers</Card.Title>
       </Card.Header>
       <Card.Body className="d-flex">
         <div className="align-self-center w-100">
@@ -67,43 +67,43 @@ const PieChart = () => {
           <Table className="mb-0">
             <thead>
               <tr>
-                <th>Source</th>
-                <th className="text-end">Revenue</th>
-                <th className="text-end">Value</th>
+                <th>Teacher</th>
+                <th className="text-end">Passed Count</th>
+                <th className="text-end">Percentage</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
                   <FontAwesomeIcon icon={faSquare} className="text-primary" />{" "}
-                  Direct
+                  Ruel
                 </td>
-                <td className="text-end">$ 2602</td>
-                <td className="text-end text-success">+43%</td>
+                <td className="text-end">2602</td>
+                <td className="text-end text-success">83%</td>
               </tr>
               <tr>
                 <td>
                   <FontAwesomeIcon icon={faSquare} className="text-warning" />{" "}
-                  Affiliate
+                  Roger
                 </td>
-                <td className="text-end">$ 1253</td>
-                <td className="text-end text-success">+13%</td>
+                <td className="text-end">1853</td>
+                <td className="text-end text-success">80%</td>
               </tr>
               <tr>
                 <td>
                   <FontAwesomeIcon icon={faSquare} className="text-danger" />{" "}
-                  E-mail
+                  Alvin
                 </td>
-                <td className="text-end">$ 541</td>
-                <td className="text-end text-success">+24%</td>
+                <td className="text-end">1541</td>
+                <td className="text-end text-success">78%</td>
               </tr>
               <tr>
                 <td>
                   <FontAwesomeIcon icon={faSquare} className="text-dark" />{" "}
-                  Other
+                  Jorge
                 </td>
-                <td className="text-end">$ 1465</td>
-                <td className="text-end text-success">+11%</td>
+                <td className="text-end">1265</td>
+                <td className="text-end text-success">72%</td>
               </tr>
             </tbody>
           </Table>

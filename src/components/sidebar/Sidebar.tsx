@@ -5,7 +5,8 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import useSidebar from "../../hooks/useSidebar";
 import SidebarFooter from "./SidebarFooter";
 import SidebarNav from "./SidebarNav";
-import { ReactComponent as Logo } from "../../assets/img/logo.svg";
+
+import SchoolLogo from "/src/assets/img/logo.svg";
 
 import { SidebarItemsType } from "../../types/sidebar";
 
@@ -26,7 +27,7 @@ const Sidebar = ({ items, showFooter = true }: SidebarProps) => {
       <div className="sidebar-content">
         <PerfectScrollbar>
           <a className="sidebar-brand" href="/">
-            <Logo /> <span className="align-middle me-3">BeeSee Global</span>
+            <img src={SchoolLogo} alt="SCHOOL LOGO" />
           </a>
           <SidebarNav items={items} />
           {!!showFooter && <SidebarFooter />}

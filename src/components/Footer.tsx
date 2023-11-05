@@ -19,12 +19,15 @@ const Footer = () => (
             <li className="list-inline-item">
               <span className="text-muted">Terms of Service</span>
             </li>
+            <li className="list-inline-item">
+              <span className="text-muted">Image by <a href="https://www.freepik.com/free-vector/set-four-college-vintage-stickers_919706.htm#query=school%20logo&position=23&from_view=search&track=ais#position=23&query=school%20logo" target="_blank">Freepik</a></span>
+            </li>
           </ul>
         </Col>
         <Col xs="6" className="text-end">
           <p className="mb-0">
             &copy; {new Date().getFullYear()} -{" "}
-            <span className="text-muted">AppStack</span>
+            <span className="text-muted"><a href="https://beesee.ph" target="_blank">BeeSee Global</a></span>
           </p>
         </Col>
       </Row>

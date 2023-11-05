@@ -9,13 +9,14 @@ type Item = string;
 // Define the props interface for the component
 interface DidYouKnowProps {
     items: Item[];
+    onViewProfile?: (mode: boolean) => void;
 }
 
-const DidYouKnow: React.FC<DidYouKnowProps> = ({ items }) => {
+const DidYouKnow: React.FC<DidYouKnowProps> = ({ items, onViewProfile }) => {
     return (
         <Card>
             <Card.Header>
-                <h4 className='border-bottom border-2 pb-2'>Did you Know?</h4>
+                <h4 className='border-bottom border-2 pb-2'>Help Guide</h4>
             </Card.Header>
             <Card.Body className='pt-0'>
                 <div>

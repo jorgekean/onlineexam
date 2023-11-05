@@ -1,6 +1,7 @@
 import { faCancel, faList, faQuestion, faQuestionCircle, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useContext, useEffect, useState } from 'react';
+import { Form as FinalForm, Field, FormSpy } from 'react-final-form';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import Select from "react-select";
@@ -8,7 +9,14 @@ import DexieUtils from '../../utils/dexie-utils';
 import NotyfContext from '../../contexts/NotyfContext';
 import { SectionModel } from '../sections/SectionsForm';
 import ReactQuill from 'react-quill';
-import MultipleChoice from './answers/MultipleChoice';
+import MultipleChoice, { multipleChoiceDefault } from './answers/MultipleChoice';
+import FillInTheBlank, { fillInTheBlankChoiceDefault } from './answers/FillInTheBlank';
+import SelectAdapter from '../shared/finalformadapter/SelectAdapter';
+import React from 'react';
+import EditorAdapter from '../shared/finalformadapter/EditorAdapter';
+import { QuestionTypeConst, questionType } from './types';
+import TrueOrFalse, { trueOrFalseChoiceDefault } from './answers/TrueOrFalse';
+import Essay, { essayChoiceDefault } from './answers/Essay';
 
 interface QuestionsProps {
     // listMode?: boolean;
@@ -16,39 +24,58 @@ interface QuestionsProps {
     question?: QuestionModel;
 }
 
-interface AnswerModel {
+export interface AnswerModel {
     id: string;
-    questionId: string;
-    answerText: string;
-    // isCorrect: boolean;
+    questionId?: string;
+    answerText: any;
+    isCorrect: boolean;
 }
 
 export interface QuestionModel {
     id: string;
-    questionType: string;
+    questionType: questionType;
+    questionTypeDesc: string;
     section: string;
     questionText: string;
-    choices?: AnswerModel[]// nullable since question can be fill in the blank
-    correctAnswers: AnswerModel[]
+    choices: AnswerModel[]
+    // correctAnswers: AnswerModel[]
     explanation?: string;
     status: 'Draft' | 'Published'
+    selected?: boolean// leave this here for now we might want to create separate model for the purpose of question picking in exam page
 }
 
+// export const getDefaultChoices = (questionType: string) => {
+//     // console.log(formState.values)
+//     switch (questionType) {
+//         case "multipleChoiceRadio":
+//         case "multipleChoiceDropdown":
+//             return multipleChoiceDefault
+
+//         case "fillInTheBlank":
+//             return fillInTheBlankChoiceDefault
+//         default:
+//         // Code to execute if none of the cases match expression
+//     }
+// }
+
 const QuestionsForm: React.FC<QuestionsProps> = ({ updateListMode, question }) => {
+
     // Initialize the form state with default values
     const initialFormState: QuestionModel = {
         id: question ? question.id : '',
         questionType: question ? question.questionType : 'multipleChoiceRadio',
+        questionTypeDesc: question ? question.questionTypeDesc : '',
         section: question ? question.section : '',
         questionText: question ? question.questionText : '',
-        choices: question ? question.choices : [],
-        correctAnswers: question ? question.correctAnswers : [],
+        choices: question ? question.choices : multipleChoiceDefault,
+        // correctAnswers: question ? question.correctAnswers : [],
         explanation: question ? question.explanation : '',
         status: question ? question.status : 'Published'
     };
 
-    const [formState, setFormState] = useState<QuestionModel>(initialFormState);
+    // const [formState, setFormState] = useState<QuestionModel>(initialFormState);
     const [dexieUtils] = useState(DexieUtils<QuestionModel>({ tableName: 'questions' }));
+    const [answerDexieUtils] = useState(DexieUtils<AnswerModel>({ tableName: 'answers' }));
     const [sectionDexieUtils] = useState(DexieUtils<SectionModel>({ tableName: 'sections' }));
     const notyf = useContext(NotyfContext);
     // Add a state to track errors for each form field
@@ -70,64 +97,58 @@ const QuestionsForm: React.FC<QuestionsProps> = ({ updateListMode, question }) =
         fetchData();
     }, []);
 
+    const handleQuestionTypeChange = (questionType: string, form: any) => {
+        useEffect(() => {
+            console.log(question, questionType)
+            if (!question) {
+                switch (questionType) {
+                    case QuestionTypeConst.MULTIPLE_CHOICE_RADIO:
+                    case QuestionTypeConst.MULTIPLE_CHOICE_DROPDOWN:
+                        form.change('choices', multipleChoiceDefault)
+                        break;
+                    case QuestionTypeConst.FILL_IN_THE_BLANK:
+                        form.change('choices', fillInTheBlankChoiceDefault)
+                        break;
+                    case QuestionTypeConst.TRUE_OR_FALSE:
+                        form.change('choices', trueOrFalseChoiceDefault)
+                        break;
+                    case QuestionTypeConst.ESSAY:
+                        form.change('choices', essayChoiceDefault)
+                        break;
+                    default:
+                        null
+                        break;
+                }
+            }
 
-    // Handle changes in form inputs and update the form state
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value, type, required } = event.target;
+        }, [questionType])
+    }
 
-        // Special handling for checkboxes
-        let fieldValue = type === 'radio' ? ((event.target as HTMLInputElement).value) : value;
-        let checked: boolean
-        if (type === 'checkbox') {
-            checked = (event.target as HTMLInputElement).checked
-        }
-
-        setFormState((prevState) => ({
-            ...prevState,
-            [name]: type === "checkbox" ? checked : fieldValue,
-        }));
-
-        // Validate the form field and update the error state
-        if (required && !fieldValue) {
-            setErrors((prevErrors) => ({ ...prevErrors, [name]: 'Required!' }));
-        } else {
-            setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
-        }
-    };
-
-    const handleQuestionTextChange = (content: string) => {
-        console.log(content)
-        setFormState((prevState) => ({
-            ...prevState,
-            "questionText": content,
-        }));
-
-    };
-
-    const onSave = async () => {
+    const onSave = async (ques: QuestionModel) => {
         // Perform the add operation using DexieUtils
-        const id = await dexieUtils.add(formState);
+        const id = await dexieUtils.add(ques);
+
         console.log('Added successfully with id:', id);
     }
-    const onUpdate = async () => {
+    const onUpdate = async (ques: QuestionModel) => {
         // Perform the update operation using DexieUtils
-        await dexieUtils.update(formState);
-        console.log('Updated successfully with id:', formState.id);
+        await dexieUtils.update(ques);
+        console.log('Updated successfully with id:', ques.id);
     }
 
+    const handleFormSubmit = async (values: QuestionModel) => {
 
-    const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
         try {
+            values.questionTypeDesc = questionTypeOptions.find(q => q.value === values.questionType)?.label ?? ''
             // Perform the add operation using DexieUtils
             if (question) {
-                onUpdate()
+                onUpdate(values)
             } else {
-                onSave()
+                onSave(values)
             }
 
             // Optionally, you can clear the form after adding
-            setFormState(initialFormState);
+            // setFormState(initialFormState);
 
             // Show a success message
             notyf.open({
@@ -148,11 +169,11 @@ const QuestionsForm: React.FC<QuestionsProps> = ({ updateListMode, question }) =
     };
 
     const questionTypeOptions = [
-        { value: "multipleChoiceRadio", label: "Multiple Choice (Radio)" },
-        { value: "multipleChoiceDropdown", label: "Multiple Choice (Dropdown)" },
-        { value: "fillInTheBlank", label: "Fill in the Blank" },
-        { value: "trueOrFalse", label: "True or False" },
-        { value: "essay", label: "Essay (Evaluated by Admin)" },
+        { value: QuestionTypeConst.MULTIPLE_CHOICE_RADIO, label: "Multiple Choice (Radio)" },
+        { value: QuestionTypeConst.MULTIPLE_CHOICE_DROPDOWN, label: "Multiple Choice (Dropdown)" },
+        { value: QuestionTypeConst.FILL_IN_THE_BLANK, label: "Fill in the Blank" },
+        { value: QuestionTypeConst.TRUE_OR_FALSE, label: "True or False" },
+        { value: QuestionTypeConst.ESSAY, label: "Essay (Evaluated by Teacher)" },
     ];
 
     return (
@@ -166,76 +187,79 @@ const QuestionsForm: React.FC<QuestionsProps> = ({ updateListMode, question }) =
                 </div>
             </Card.Header>
             <Card.Body>
-                <Form onSubmit={handleFormSubmit}>
-                    <Row>
-                        <Col md={6}>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Question Type</Form.Label>
-                                <Select
-                                    className={`react-select-container ${errors.questionType ? 'is-invalid' : ''}`}
-                                    classNamePrefix="react-select"
-                                    options={questionTypeOptions}
-                                    isSearchable
-                                    value={questionTypeOptions.find((option) => option.value === formState.questionType)}
-                                    onChange={(selectedOption) => {
-                                        if (selectedOption) {
-                                            setFormState((prevState) => ({
-                                                ...prevState,
-                                                questionType: selectedOption.value,
-                                            }));
-                                        } else {
-                                            setFormState((prevState) => ({
-                                                ...prevState,
-                                                questionType: '',
-                                            }));
-                                        }
-                                    }}
-                                    required
+                <FinalForm
+                    onSubmit={handleFormSubmit}
+                    initialValues={initialFormState}>
+                    {({ handleSubmit, form }) => (
+                        <Form onSubmit={handleSubmit}>
+                            <Row>
+                                <Col md={6}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Question Type</Form.Label>
+                                        <Field<string>
+                                            name="questionType"
+                                            component={SelectAdapter}
+                                            options={questionTypeOptions}
+                                            isSearchable
+                                            isDisabled={question ? true : false}// disable on edit
+                                            required />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Section</Form.Label>
+                                        <Field<string>
+                                            name="section"
+                                            component={SelectAdapter}
+                                            options={sectionOptions}
+                                            isSearchable
+                                            required />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Form.Group className="mb-3 question-editor">
+                                <Form.Label>Question</Form.Label>
+                                <Field<string>
+                                    name="questionText"
+                                    component={EditorAdapter}
+                                    placeholder="You can type or drag your question here"
                                 />
                             </Form.Group>
-                        </Col>
-                        <Col md={6}>
                             <Form.Group className="mb-3">
-                                <Form.Label>Section</Form.Label>
-                                <Select
-                                    className={`react-select-container ${errors.questionType ? 'is-invalid' : ''}`}
-                                    classNamePrefix="react-select"
-                                    options={sectionOptions}
-                                    isSearchable
-                                    value={sectionOptions.find((option) => option.value === formState.section)}
-                                    onChange={(selectedOption) => {
-                                        if (selectedOption) {
-                                            setFormState((prevState) => ({
-                                                ...prevState,
-                                                section: selectedOption.value,
-                                            }));
-                                        } else {
-                                            setFormState((prevState) => ({
-                                                ...prevState,
-                                                section: '',
-                                            }));
-                                        }
+                                <Form.Label>Answers</Form.Label>
+
+                                <Field name="questionType">
+                                    {({ input: { value } }) => (
+                                        <>
+                                            {
+                                                handleQuestionTypeChange(value, form)
+                                            }
+                                            {(value === QuestionTypeConst.MULTIPLE_CHOICE_RADIO || value === QuestionTypeConst.MULTIPLE_CHOICE_DROPDOWN) && <MultipleChoice />}
+                                            {value === QuestionTypeConst.FILL_IN_THE_BLANK && <FillInTheBlank />}
+                                            {value === QuestionTypeConst.TRUE_OR_FALSE && <TrueOrFalse />}
+                                            {value === QuestionTypeConst.ESSAY && <Essay />}
+                                        </>
+                                    )}
+                                </Field>
+                                {/* <FormSpy subscription={{ values: true }}>
+                                    {({ values, form }) => {
+
+                                        // const defaultChoices = getDefaultChoices(values.questionType)
+                                        // form.change('choices', defaultChoices);
+
+                                        return (
+                                            <React.Fragment>
+                                                {JSON.stringify(values)}
+                                            </React.Fragment>
+                                        )
                                     }}
-                                    required
-                                />
+                                </FormSpy> */}
                             </Form.Group>
-                        </Col>
-                    </Row>
-                    <Form.Group className="mb-3 question-editor">
-                        <Form.Label>Question</Form.Label>
-                        <ReactQuill
-                            placeholder="You can type or drag your question here"
-                            onChange={handleQuestionTextChange}
-                            value={formState.questionText}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Answers</Form.Label>
-                        {(formState.questionType === "multipleChoiceRadio" || formState.questionType === "multipleChoiceDropdown") && <MultipleChoice></MultipleChoice>}
-                    </Form.Group>
-                    <Button type='submit' variant="primary me-2"><FontAwesomeIcon icon={faSave} /> Submit</Button>
-                    <Button variant="secondary" onClick={() => updateListMode(true)}><FontAwesomeIcon icon={faCancel} /> Cancel</Button>
-                </Form>
+                            <Button type='submit' variant="primary me-2"><FontAwesomeIcon icon={faSave} /> Submit</Button>
+                            <Button variant="secondary" onClick={() => updateListMode(true)}><FontAwesomeIcon icon={faCancel} /> Cancel</Button>
+                        </Form>
+                    )}
+                </FinalForm>
             </Card.Body>
         </Card>
 

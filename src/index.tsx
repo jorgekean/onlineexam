@@ -7,9 +7,6 @@ import App from "./App";
 // Note: Remove the following line if you want to disable the API mocks.
 import "./mocks";
 
-import "jsvectormap";
-import "./vendor/world.js";
-import "./vendor/us_aea_en.js";
 import "./assets/scss/light.scss"
 
 const container = document.getElementById("root");

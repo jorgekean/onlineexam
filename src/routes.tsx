@@ -14,18 +14,59 @@ import Exams from "./pages/exams/Exams";
 import Students from "./components/students/Students";
 import Questions from "./pages/questions/Questions";
 import Statistics from "./pages/statistics/Statistics";
-import Notifications from "./pages/notifications/Notifications";
+import NotificationPage from "./pages/notifications/Notifications";
 import { Settings } from "react-feather";
 import StudentsPage from "./pages/students/Students";
-import Sections from "./pages/settings/sections/Sections";
-import Groups from "./pages/settings/groups/Groups";
+import Sections from "./pages/sections/Sections";
+import Groups from "./pages/subjects/Subjects";
+import SubjectsPage from "./pages/subjects/Subjects";
+
 import { myAppConfig } from "./config";
+
+import Directions from "./pages/directions/Directions"
+// import DashboardsPage from "./pages/_studentspages/dashboards/Dashboards";
+import ExamsPage from "./pages/_studentspages/exams/Exams";
+import NotificationsPage from "./pages/_studentspages/notifications/StudentNotificationPage";
+// import MyAccountPage from "./pages/_studentspages/myaccount/MyAccount";
+import DocsPage from "./pages/_studentspages/docs/Docs";
+import ExamHistoryPage from "./pages/_studentspages/examhistory/ExamHistory";
+import TakeExamPage from "./pages/_studentspages/exams/TakeExam";
+import Teacher from "./pages/teacher/Teacher";
+// import TeacherProfile from "./components/teacher/TeacherProfile";
+import ExamResultPage from "./pages/_studentspages/exams/ExamResult";
+// import ongoingExam from "./pages/ongoing-exam/ongoingExam";
+import TeacherProfile from "./pages/teacher/TeacherProfilePage";
+import TeachersPage from "./pages/teacher/Teacher";
+import TeacherForm, { TeacherModel } from "./components/teacher/TeacherForm";
+import SchoolProfilePage from "./pages/school/SchoolProfilePage";
+// import StudentProfilePage from "./pages/students/StudentProfilePage";
+import StudentProfilePage from "./pages/_studentspages/myaccount/StudentProfilePage";
+import TeacherProfileForm from "./components/teacher/teacherMyAccount/TeacherMyAccountForm";
+
+import OngoingExamPage from "./pages/_studentspages/exams/OngoingExam";
+import ExamMonitoringPage from "./pages/_studentspages/exams/ExamMonitoring";
+import SummaryQuetionPage from "./pages/summary/SummaryQuestion";
+// import DefaultStudentDashboard from "./pages/dashboards/DefaultStudentDashboard/DefaultStudentDashboard";
+import DefaultStudentDashboard from "./pages/_studentspages/dashboards/DefaultStudentDashboard";
+import DefaultSchoolDashboard from "./pages/dashboards/DefaultSchoolDashboard/DefaultSchoolDashboard";
+
+import StudentExamResultPage from "./components/_studentscomponents/examhistory/StudentExamResult";
+
+import StudentSubjectPerformancePage from "./components/subjects/StudentSubjectPerformance";
+import EssayScoringPage from "./pages/essayscoring/EssayScoring";
+import EssayScoringExamPage from "./pages/essayscoring/EssayScoringExam";
+import StudentNotificationPage from "./pages/_studentspages/notifications/StudentNotificationPage";
+import EssayScorringPage from "./pages/essay/essayScoring";
+
 
 // Landing
 const Landing = lazy(() => import("./pages/landing/Landing"));
 
 // Dashboards
 const Default = lazy(() => import("./pages/dashboards/Default"));
+
+
+
 // const Analytics = lazy(() => import("./pages/dashboards/Analytics"));
 // const SaaS = lazy(() => import("./pages/dashboards/SaaS"));
 // const Social = lazy(() => import("./pages/dashboards/Social"));
@@ -54,11 +95,11 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const routes = [
   {
     path: `${myAppConfig.baseURL}/`,
-    element: <DashboardLayout />,
+    element: <LandingLayout />,
     children: [
       {
         path: "",
-        element: <AuthGuard><Default /></AuthGuard>,
+        element: <AuthGuard><Landing /></AuthGuard>,
       },
     ],
   },
@@ -74,9 +115,21 @@ const routes = [
         path: "exams",
         element: <AuthGuard><Exams /></AuthGuard>,
       },
+      // {
+      //   path: "essayScoring",
+      //   element: <AuthGuard><EssayScorringPage /></AuthGuard>,
+      // },
       {
         path: "students",
         element: <AuthGuard><StudentsPage /></AuthGuard>,
+      },
+      {
+        path: `studentProfile`,
+        element: <AuthGuard><StudentProfilePage /></AuthGuard>
+      },
+      {
+        path: "teacher",
+        element: <AuthGuard><TeachersPage /></AuthGuard>,
       },
       {
         path: "questions",
@@ -88,38 +141,34 @@ const routes = [
       },
       {
         path: "notifications",
-        element: <AuthGuard><Notifications /></AuthGuard>,
-      }
+        element: <AuthGuard><NotificationPage /></AuthGuard>,
+      },
+      {
+        path: "student-subject-performance/:id",
+        element: <AuthGuard><StudentSubjectPerformancePage /></AuthGuard>,
+      },
     ],
   },
   {
-    path: `${myAppConfig.baseURL}/settings`,
+    path: `${myAppConfig.baseURL}/`,
     element: <DashboardLayout />,
     children: [
       {
         path: "sections",
-        element: <Sections />,
+        element: <AuthGuard><Sections /></AuthGuard>,
       },
       {
-        path: "groups",
-        element: <Groups />,
+        path: "subjects",
+        element: <AuthGuard><SubjectsPage /></AuthGuard>,
+      },
+
+      {
+        path: "directions",
+        element: <AuthGuard><Directions /></AuthGuard>,
       }
+
     ]
   },
-  // {
-  //   path: `${baseURL}/settings`,
-  //   element: <DashboardLayout />,
-  //   childrem: [
-  //     {
-  //       path: "sections",
-  //       element: <AuthGuard><Sections /></AuthGuard>
-  //     },
-  //     {
-  //       path: "groups",
-  //       element: <AuthGuard><Groups /></AuthGuard>
-  //     }
-  //   ]
-  // },
   {
     path: `${myAppConfig.baseURL}/auth`,
     element: <AuthLayout />,
@@ -128,10 +177,6 @@ const routes = [
         path: "sign-in",
         element: <SignIn />,
       },
-      // {
-      //   path: "sign-up",
-      //   element: <SignUp />,
-      // },
       {
         path: "reset-password",
         element: <ResetPassword />,
@@ -166,6 +211,86 @@ const routes = [
       },
     ],
   },
+  {
+    path: `${myAppConfig.studentBaseURL}`,
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "exams",
+        element: <AuthGuard><ExamsPage /></AuthGuard>,
+      },
+      {
+        path: "ongoing-exam",
+        element: <AuthGuard><OngoingExamPage /></AuthGuard>,
+      },
+      {
+        path: "examMonitoring/:id",
+        element: <AuthGuard><ExamMonitoringPage /></AuthGuard>,
+      },
+      {
+        path: "exams/:id",
+        element: <AuthGuard><TakeExamPage /></AuthGuard>,
+      },
+      {
+        path: "exam-history",
+        element: <AuthGuard><ExamHistoryPage /></AuthGuard>,
+      },
+      {
+        path: "exam-results/:id",
+        element: <AuthGuard><ExamResultPage /></AuthGuard>,
+      },
+      {
+        path: "student-exam-result/:id",
+        element: <AuthGuard><StudentExamResultPage /></AuthGuard>,
+      },
+      {
+        path: "studentNotifications",
+        element: <AuthGuard><StudentNotificationPage /></AuthGuard>,
+      },
+      {
+        path: "docs",
+        element: <AuthGuard><DocsPage /></AuthGuard>,
+      },
+    ],
+  },
+  {
+    path: `${myAppConfig.baseURL}/`,
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: `teacherProfile`,
+        element: <AuthGuard><TeacherProfile /></AuthGuard>
+      },
+      {
+        path: `schooProfile`,
+        element: <AuthGuard><SchoolProfilePage /></AuthGuard>,
+      },
+      {
+        path: `summaryQuestion`,
+        element: <AuthGuard><SummaryQuetionPage /></AuthGuard>,
+      },
+      {
+        path: "studentDashboard",
+        element: <AuthGuard><DefaultStudentDashboard /></AuthGuard>,
+      },
+      {
+        path: "schoolDashboard",
+        element: <AuthGuard><DefaultSchoolDashboard /></AuthGuard>,
+      },
+      {
+        path: "essay-scoring",
+        element: <AuthGuard><EssayScoringPage /></AuthGuard>,
+      },
+      {
+        path: "essay-scoring/:examId",
+        element: <AuthGuard><EssayScoringExamPage /></AuthGuard>,
+      },
+      {
+        path: "essay-table",
+        element: <AuthGuard><EssayScoringExamPage /></AuthGuard>,
+      },
+    ],
+  },
 ];
-
+// EssayTable
 export default routes;

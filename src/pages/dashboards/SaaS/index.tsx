@@ -7,7 +7,6 @@ import BarChart from "./BarChart";
 import Header from "./Header";
 import Products from "./Products";
 import Statistics from "./Statistics";
-import USAMap from "./USAMap";
 
 const SaaS = () => (
   <React.Fragment>
@@ -16,9 +15,6 @@ const SaaS = () => (
       <Header />
       <Statistics />
       <Row>
-        <Col lg="4" className="d-flex">
-          <USAMap />
-        </Col>
         <Col md="7" lg="4" className="col-xxl-6 d-flex">
           <BarChart />
         </Col>

@@ -8,7 +8,7 @@ const Appointments = () => (
   <Card className="flex-fill w-100">
     <Card.Header>
       <div className="card-actions float-end">
-        <Dropdown align="end">
+        {/* <Dropdown align="end">
           <Dropdown.Toggle as="a" bsPrefix="-">
             <MoreHorizontal />
           </Dropdown.Toggle>
@@ -17,15 +17,15 @@ const Appointments = () => (
             <Dropdown.Item>Another Action</Dropdown.Item>
             <Dropdown.Item>Something else here</Dropdown.Item>
           </Dropdown.Menu>
-        </Dropdown>
+        </Dropdown> */}
       </div>
-      <Card.Title className="mb-0">Appointments</Card.Title>
+      <Card.Title className="mb-0">Activities</Card.Title>
     </Card.Header>
     <Card.Body className="d-flex">
       <ul className="timeline">
         <li className="timeline-item">
-          <strong>Chat with Carl and Ashley</strong>
-          <span className="float-end text-muted text-sm">30m ago</span>
+          <strong>Student 1 - Math Periodical Started</strong>
+          <span className="float-end text-muted text-sm">18 mins ago</span>
           <p>
             Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget,
             imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices
@@ -33,8 +33,8 @@ const Appointments = () => (
           </p>
         </li>
         <li className="timeline-item">
-          <strong>The big launch</strong>
-          <span className="float-end text-muted text-sm">2h ago</span>
+          <strong>Student 2 - Science Periodical Finished</strong>
+          <span className="float-end text-muted text-sm">1 hr ago</span>
           <p>
             Sed aliquam ultrices mauris. Integer ante arcu, accumsan a,
             consectetuer eget, posuere ut, mauris. Praesent adipiscing.
@@ -42,16 +42,16 @@ const Appointments = () => (
           </p>
         </li>
         <li className="timeline-item">
-          <strong>Coffee break</strong>
-          <span className="float-end text-muted text-sm">3h ago</span>
+          <strong>Student 3 - English Periodical Finished</strong>
+          <span className="float-end text-muted text-sm">Aug 10</span>
           <p>
             Curabitur ligula sapien, tincidunt non, euismod vitae, posuere
             imperdiet, leo. Maecenas malesuada...
           </p>
         </li>
         <li className="timeline-item">
-          <strong>Chat with team</strong>
-          <span className="float-end text-muted text-sm">4h ago</span>
+          <strong>Final Exam</strong>
+          <span className="float-end text-muted text-sm">Dec 3</span>
           <p className="mb-0">
             Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget,
             imperdiet nec, imperdiet iaculis, ipsum...

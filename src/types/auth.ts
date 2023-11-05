@@ -32,25 +32,6 @@ export type JWTContextType = {
   resetPassword: (email: string) => void;
 };
 
-export type FirebaseAuthContextType = {
-  isAuthenticated: boolean;
-  isInitialized: boolean;
-  user: AuthUser;
-  method: "firebase";
-  signIn: (email: string, password: string) => Promise<any>;
-  signUp: (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string
-  ) => Promise<void>;
-  signInWithGoogle: () => Promise<any>;
-  signInWithFaceBook: () => Promise<any>;
-  signInWithTwitter: () => Promise<any>;
-  signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<void>;
-};
-
 export type Auth0ContextType = {
   isAuthenticated: boolean;
   isInitialized: boolean;

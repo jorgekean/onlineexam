@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import logo from "../../assets/img/bee-see-new-logo-small.png";
+import logo from "../../assets/img/logo.svg";
 
 import ResetPassword from "../../components/auth/ResetPassword";
 import { myAppConfig } from "../../config";
@@ -16,10 +16,12 @@ const ResetPasswordPage = () => (
         src={logo}
         alt="Logo"
         className="img-fluid"
-        style={{ maxWidth: '300px' }}
+        style={{ maxWidth: '200px', marginBottom: '10px' }}
       />
-      <h1 className="h2">Reset password</h1>
-      <p className="lead">Enter your email to reset your password.</p>
+      {<div className="lead"
+        style={{ height: '20px' }}
+      >
+      </div>}
     </div>
 
     <Card>
@@ -30,10 +32,10 @@ const ResetPasswordPage = () => (
       </Card.Body>
     </Card>
     <div className="text-center mb-1 small">
-      Please Contact <b><a href="mailto:support@onlineexam.net">support@onlineexam.net</a></b> in case of any query.
+      Please Contact <b><a href="mailto:support@eksam.ph">support@eksam.ph</a></b> in case of any query.
     </div>
     <div className="text-center mb-1 small">
-      Don't have a onlineexam account? <Link to={`/${myAppConfig.baseURL}/auth/sign-up`}>Create for free</Link>
+      Don't have an account? <Link to={`${myAppConfig.baseURL}/auth/sign-up`}>Register a student account</Link>
     </div>
   </React.Fragment>
 );

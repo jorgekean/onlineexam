@@ -2,23 +2,28 @@ import { faGear, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
-import MyTable from '../tables/MyTable'
+import MyTable, { SelectColumnFilter } from '../tables/MyTable'
 import { QuestionModel } from './QuestionsForm'
 import NotyfContext from '../../contexts/NotyfContext';
-import DexieUtils from '../../utils/dexie-utils'
-
+import DexieUtils from '../../utils/dexie-utils';
+import { questionInitialData } from '../../initialdata'
 // import { tableData, tableColumns } from "./data";
 
 import './questions.css'
+import { Column } from 'react-table'
 
-const tableColumns = [
+const tableColumns: Column[] | any = [
     {
         Header: "Question Type",
-        accessor: "questionType",
+        accessor: "questionTypeDesc",
+        filter: true,
+        Filter: SelectColumnFilter
     },
     {
         Header: "Section",
         accessor: "section",
+        filter: true,
+        Filter: SelectColumnFilter
     },
     {
         Header: "Question Text",
@@ -87,6 +92,7 @@ const Questions: React.FC<QuestionsProps> = ({ updateListMode, setSelectedRow })
             <Card.Body>
                 <MyTable
                     columns={tableColumns}
+                    // data={questionInitialData as []}
                     data={questions as []}
                     onEdit={(e) => handleOnEdit(e)}
                     onDelete={(e) => handleOnDelete(e)}

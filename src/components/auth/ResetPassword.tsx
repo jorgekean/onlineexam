@@ -28,7 +28,7 @@ function ResetPassword() {
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           resetPassword(values.email);
-          navigate(`/${myAppConfig.baseURL}/auth/sign-in`);
+          navigate(`${myAppConfig.baseURL}/auth/sign-in`);
         } catch (error: any) {
           const message = error.message || "Something went wrong";
 
@@ -54,12 +54,12 @@ function ResetPassword() {
             </Alert>
           )}
           <Form.Group className="mb-3">
-            <Form.Label>Email</Form.Label>
+            <Form.Label>Enter your email</Form.Label>
             <Form.Control
               size="lg"
               type="email"
               name="email"
-              placeholder="Enter your email"
+              placeholder=""
               value={values.email}
               isInvalid={Boolean(touched.email && errors.email)}
               onBlur={handleBlur}
@@ -82,7 +82,7 @@ function ResetPassword() {
             </Button>
           </div>
           <small>
-            <Link to={`/${myAppConfig.baseURL}/auth/sign-in`}><FontAwesomeIcon icon={faArrowLeft} /> back to Login</Link>
+            <Link to={`${myAppConfig.baseURL}/auth/sign-in`}><FontAwesomeIcon icon={faArrowLeft} /> back to Login</Link>
           </small>
         </Form>
       )}

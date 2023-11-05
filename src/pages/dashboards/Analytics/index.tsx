@@ -9,7 +9,6 @@ import PieChart from "./PieChart";
 import RadarChart from "./RadarChart";
 import Statistics from "./Statistics";
 import Traffic from "./Traffic";
-import WorldMap from "./WorldMap";
 
 const Analytics = () => (
   <React.Fragment>
@@ -19,9 +18,6 @@ const Analytics = () => (
       <Row>
         <Col lg="6" xl="5" className="d-flex">
           <Statistics />
-        </Col>
-        <Col lg="6" xl="7" className="d-flex">
-          <WorldMap />
         </Col>
       </Row>
       <Row>

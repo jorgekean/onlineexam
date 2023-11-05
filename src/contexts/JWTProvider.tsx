@@ -137,14 +137,16 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = async (
     email: string,
     password: string,
-    firstName: string,
-    lastName: string
+    howDidYouFound: string
+    // firstName: string,
+    // lastName: string
   ) => {
     const response = await axios.post("/api/auth/sign-up", {
       email,
       password,
-      firstName,
-      lastName,
+      howDidYouFound
+      // firstName,
+      // lastName,
     });
     const { accessToken, user } = response.data;
 

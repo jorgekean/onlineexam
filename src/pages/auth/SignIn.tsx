@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import SignIn from "../../components/auth/SignIn";
 
-import logo from "../../assets/img/bee-see-new-logo-small.png";
+import logo from "../../assets/img/logo.svg";
 import { myAppConfig } from "../../config";
 
 const SignInPage = () => (
@@ -16,9 +16,12 @@ const SignInPage = () => (
         src={logo}
         alt="Logo"
         className="img-fluid"
-        style={{ maxWidth: '300px' }}
+        style={{ maxWidth: '200px', marginBottom: '10px' }}
       />
-      <p className="lead">Administrative Signin</p>
+      {<div className="lead"
+        style={{ height: '20px' }}
+      >
+      </div>}
     </div>
 
     <Card>
@@ -29,10 +32,10 @@ const SignInPage = () => (
       </Card.Body>
     </Card>
     <div className="text-center mb-3 small">
-      Please Contact <b><a href="mailto:support@onlineexam.net">support@onlineexam.net</a></b> in case of any query.
+      Please Contact <b><a href="mailto:support@eksam.ph">support@eksam.ph</a></b> in case of any query.
     </div>
     <div className="text-center mb-3 small">
-      Don't have a onlineexam account? <Link to={`/${myAppConfig.baseURL}/auth/sign-up`}>Create for free</Link>
+      Don't have an account? <Link to={`${myAppConfig.baseURL}/auth/sign-up`}>Register a student account</Link>
     </div>
   </React.Fragment>
 );
